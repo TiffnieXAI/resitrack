@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import { useLocation } from "react-router-dom"
 
-import Imagess from "./Images";
+import Imagess from "./Images.jsx";
 
 function PageNav(){
 

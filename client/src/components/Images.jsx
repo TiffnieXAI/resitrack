@@ -6,6 +6,10 @@ import Location from '../assets/location.png'
 import LocationActive from '../assets/locationActive.png'  // Fix: Use correct active icon path
 import Pulse from '../assets/pulse.png'
 import PulseActive from '../assets/pulseActive.png'
+import TotalHouseHold from '../assets/totalHouseHold.png'
+import SafeHouseHold from '../assets/safeHouseHolds.png'
+import notSafe from '../assets/notSafeDash.png'
+import UnverifiedDash from '../assets/pendingDash.png'
 
 const Imagess = {
   pagesNav: {
@@ -17,6 +21,13 @@ const Imagess = {
     LocationActive,
     Pulse,
     PulseActive
+  },
+
+  dashboardPage: {
+    TotalHouseHold,
+    SafeHouseHold,
+    notSafe,
+    UnverifiedDash
   }
 }
 
