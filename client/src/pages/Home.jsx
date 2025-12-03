@@ -1,10 +1,11 @@
 import CurrentLocationMap from "../components/CurrentLocationMap"
+import PageHeader from "../components/PageHeader"
 function Home(){
 
     return(
-        <>
-            <p>Niiger</p>
-        </>
+        <div className="content-wrapper">
+            <PageHeader></PageHeader>
+        </div>
     )
 
 }

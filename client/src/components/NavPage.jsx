@@ -8,7 +8,7 @@ function NavPage(){
     <div className="navContainer">
         <div className="navTitle">
             <div>
-                <img src={Icon} className="navIcon"></img><p>ResiTrack</p>
+                <img src={Icon} className="navIcon"></img><p>ResiTrack</p><div className="mobileProfileImage"></div>
             </div>
         </div>
         
