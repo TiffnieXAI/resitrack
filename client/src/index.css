@@ -60,6 +60,10 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  @media (max-width:720px) {
+    background-color:#0E0F10 ;
+    width: 100%;
+  }
 }
 
 .navTitle {
@@ -162,12 +166,17 @@ body {
   width: 100%;
   transition: 0.2s;
   cursor: pointer;
+
 }
 
 .navButton p {
   margin-left: 1vh;
   font-weight: 400 ;
   font-size: 1.8vh;
+  white-space: nowrap;
+  @media (max-width:900px) {
+    font-size: 1.2vh;
+  }
 }
 
 .navButton:hover {
@@ -210,6 +219,78 @@ body {
   color: #9D9D9D;
 }
 
+.summary-container {
+  display: flex;
+  justify-content: space-between;
+  @media (max-width:720px) {
+    flex-direction: column;
+  }
+}
+
+.summary-bar {
+  display: flex; 
+  justify-content: space-between ;
+  align-items: center;
+  width: 75%;
+  background-color: #292C2C;
+  height: 12vh;
+  margin-top: 2vh;
+  border-radius: 1vh;
+  @media (max-width:720px) {
+    width: 100%;
+    border-radius: 0;
+    background-color: rgba(0, 0, 0, 0);
+    border-bottom: 1px solid #40404060;
+  }
+}
+
+.summary-bar-desc {
+  height: 60%;
+  width: calc(100% / 4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.summary-bar-desc div p {
+  color: #9A9A9A;
+  font-size: 1.5vh;
+  height:50%;
+  width: 100%;
+  white-space: nowrap;
+}
+
+.summary-bar-desc div p + p {
+  color: white;
+  font-size: 3vh;
+}
+
+
+.smaller-bar {
+  width: 23%;
+  display: flex;
+  justify-content: start;
+  @media (max-width:720px) {
+    width: 100%;
+  }
+}
+
+.smaller-bar div {
+  margin-left: 18%;
+  @media (max-width:720px) {
+    width: 10%!important;
+    margin-left: 0;
+  }
+}
+
+.page-sub-header {
+  font-size: 2vh;
+  font-weight: 500;
+  height: 8vh;
+  display: flex;
+  align-items: center;
+}
 /*mobile-feat*/
 
 .mobileProfileImage {
