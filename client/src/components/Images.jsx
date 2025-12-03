@@ -1,15 +1,4 @@
-import houseHold from '../assets/household.png'
-import houseHoldActive from '../assets/householdActive.png'
-import Incident from '../assets/incident.png'
-import IncidentActive from '../assets/incidentActive.png'
-import Location from '../assets/location.png'
-import LocationActive from '../assets/locationActive.png'  // Fix: Use correct active icon path
-import Pulse from '../assets/pulse.png'
-import PulseActive from '../assets/pulseActive.png'
-import TotalHouseHold from '../assets/totalHouseHold.png'
-import SafeHouseHold from '../assets/safeHouseHolds.png'
-import notSafe from '../assets/notSafeDash.png'
-import UnverifiedDash from '../assets/pendingDash.png'
+
 
 const Imagess = {
   pagesNav: {

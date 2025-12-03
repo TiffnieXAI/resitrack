@@ -1,25 +1,23 @@
 import './App.css'
-import Navbar from './components/Navbar'
-import PageNav from './components/PageNav'
-import { Routes ,Route } from 'react-router-dom'
 import Home from './pages/Home.jsx';
-import Dashboard from './pages/Dashboard.jsx'
+import NavPage from './components/NavPage.jsx';
+import NavMobile from './components/NavMobile.jsx';
+import { Routes ,Route } from 'react-router-dom'
 
+import Login from './pages/Login.jsx';
 function App() {
 
 
   return (
     <>
-      <Navbar></Navbar>
-      <div className='page-container'>
-        <div className='page-wrapper'>
-          
-          <PageNav></PageNav>
-            <Routes>
-            <Route path='/' element={<Home></Home>}/>
-            <Route path='/dashboard' element={<Dashboard></Dashboard>}/>
+      <div className='container'>
+        <NavPage></NavPage>
+        <div className='wrapper'>
+          <Routes>
+              <Route path='/' element={<Home></Home>}></Route>
           </Routes>
         </div>
+        <NavMobile></NavMobile>
         
       </div>
       
