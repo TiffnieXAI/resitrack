@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom"
-import Icon from '../assets/Icon.png'
+import Icon from '../assets/darkIcon01t.png'
 
 function NavPage(){
     const location = useLocation();
