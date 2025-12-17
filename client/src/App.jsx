@@ -17,7 +17,12 @@ function App() {
         
           <Routes>
               <Route path='/' element={<div className='wrapper'><div className='contentBody'><Home></Home></div></div>}></Route>
+      
               <Route path='/map' element={<div className='wrapper'><div className='contentBody'><Maps></Maps></div></div>}></Route>
+
+              <Route path='/map' element={<div className='wrapper'><div className='contentBody'><Home></Home></div></div>}></Route>
+              
+
           </Routes>
         
         <NavMobile></NavMobile>

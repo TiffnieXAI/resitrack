@@ -10,19 +10,19 @@ function PageHeader(){
     } else if (location.pathname === "/map") {
         NavHeadText = "Safety Map";
     } else if (location.pathname === "/households") {
-        
+        NavHeadText = "Households";
     } else if (location.pathname === "/incidents") {
-       
+       NavHeadText = "Incidents";
     }
 
     if (location.pathname === "/") {
-        NavDescText = "Welcome back, Stan! Here is the summary for today";
+        NavDescText = "Welcome back, Stan! Here is the summary for today.";
     } else if (location.pathname === "/map") {
        NavDescText = "Shows your live location, helping you stay aware of your surroundings anytime.";
     } else if (location.pathname === "/households") {
-        
+        NavDescText = "Displays the list of households using Resitrack.";
     } else if (location.pathname === "/incidents") {
-        
+        NavDescText = "Displays the list of incidents occurring.";
     }
 
     return(
