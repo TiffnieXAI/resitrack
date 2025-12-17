@@ -10,7 +10,7 @@ function PageHeader(){
     } else if (location.pathname === "/map") {
         NavHeadText = "Safety Map";
     } else if (location.pathname === "/households") {
-        NavHeadText = "Households";
+        NavHeadText = "Register New Household";
     } else if (location.pathname === "/incidents") {
        NavHeadText = "Incidents";
     }
@@ -18,9 +18,9 @@ function PageHeader(){
     if (location.pathname === "/") {
         NavDescText = "Welcome back, Stan! Here is the summary for today.";
     } else if (location.pathname === "/map") {
-       NavDescText = "Shows your live location, helping you stay aware of your surroundings anytime.";
+        NavDescText = "Shows your live location, helping you stay aware of your surroundings anytime.";
     } else if (location.pathname === "/households") {
-        NavDescText = "Displays the list of households using Resitrack.";
+    
     } else if (location.pathname === "/incidents") {
         NavDescText = "Displays the list of incidents occurring.";
     }
