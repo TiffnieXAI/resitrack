@@ -109,13 +109,13 @@ export default function CurrentLocationMap({
           style={{ height: "100%", width: "100%" }}
           whenCreated={(mapInstance) => (mapRef.current = mapInstance)}
         >
-          {/* 🌙 DARK / ☀️ LIGHT TILE SWITCH */}
+          {/* 🌙 DARK / ☀️ LIGHT TILE SWITCH — No Grid */}
           <TileLayer
-            attribution='&copy; OpenStreetMap contributors &copy; CARTO'
+            attribution="&copy; OpenStreetMap &copy; Stadia Maps"
             url={
               darkMode
-                ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
-                : "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                ? "https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png"
+                : "https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png"
             }
           />
 
@@ -123,11 +123,10 @@ export default function CurrentLocationMap({
             <>
               <Marker position={pos} />
 
-              {/* Updated accuracy circle for dark mode */}
               {accuracy && (
                 <Circle
                   center={pos}
-                  radius={accuracy}
+                  radius={accuracy * 0.1}
                   pathOptions={{
                     color: darkMode ? "#00eaff" : "#1363df",
                     fillColor: darkMode ? "#00eaff" : "#1363df",
@@ -144,8 +143,6 @@ export default function CurrentLocationMap({
 
         {/* Controls */}
         <div className="absolute z-30 top-4 right-4 flex flex-col gap-2">
-
-          {/* Center Button */}
           <button
             onClick={handleCenter}
             className="px-3 py-2 bg-white rounded-lg shadow hover:scale-105 active:scale-95"
@@ -153,7 +150,6 @@ export default function CurrentLocationMap({
             Center
           </button>
 
-          {/* Track Toggle */}
           <button
             onClick={() => {
               if (!("geolocation" in navigator)) return setError("Geolocation not supported");
@@ -163,7 +159,6 @@ export default function CurrentLocationMap({
                 navigator.geolocation.clearWatch(watchIdRef.current);
                 watchIdRef.current = null;
 
-                // Single update
                 navigator.geolocation.getCurrentPosition(
                   (p) => {
                     setPos([p.coords.latitude, p.coords.longitude]);
@@ -195,7 +190,6 @@ export default function CurrentLocationMap({
             {watchIdRef.current ? "Stop tracking" : "Track"}
           </button>
 
-          {/* 🌗 Dark Mode Toggle */}
           <button
             onClick={() => setDarkMode(!darkMode)}
             className="px-3 py-2 bg-white rounded-lg shadow hover:scale-105 active:scale-95"
@@ -204,7 +198,7 @@ export default function CurrentLocationMap({
           </button>
         </div>
 
-        {/* Position readout */}
+        {/* Position Readout */}
         <div className="absolute z-20 left-4 bottom-4 bg-white bg-opacity-90 p-3 rounded shadow max-w-xs">
           <div className="text-sm">
             <strong>Position:</strong>{" "}
