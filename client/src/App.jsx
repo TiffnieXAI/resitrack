@@ -4,7 +4,7 @@ import Home from './pages/Home.jsx';
 import NavPage from './components/NavPage.jsx';
 import NavMobile from './components/NavMobile.jsx';
 import Maps from './pages/Maps.jsx';
-
+import Incidents from './pages/Incidents.jsx';
 
 import Login from './pages/Login.jsx';
 function App() {
@@ -20,8 +20,7 @@ function App() {
       
               <Route path='/map' element={<div className='wrapper'><div className='contentBody'><Maps></Maps></div></div>}></Route>
 
-              <Route path='/map' element={<div className='wrapper'><div className='contentBody'><Home></Home></div></div>}></Route>
-              
+              <Route path='/incidents' element={<div className='wrapper'><div className='contentBody'><Incidents></Incidents></div></div>}></Route>
 
           </Routes>
         
