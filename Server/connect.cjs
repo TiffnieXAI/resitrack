@@ -1,26 +1,29 @@
 const { MongoClient } = require('mongodb')
-require("dotenv").config({ path: "./config.env" })
+require('dotenv').config({ path: './config.env' })
 
 async function main() {
-    console.log(JSON.stringify(process.env.ATLAS_URI))
+  const client = new MongoClient(process.env.ATLAS_URI)  // removed options
 
-    const client = new MongoClient(process.env.ATLAS_URI)
+  try {
+    await client.connect()
+    console.log("✅ Connected to MongoDB")
 
-    try {
-        await client.connect()
-        console.log("Connected to MongoDB")
+    const db = client.db('resitrack')  // your database name
+    const testCollection = db.collection('testCollection')
 
-        const db = client.db("resitrack") // <-- FIX THIS NAME
-        const collections = await db.collections()
+    // Insert a test document
+    const result = await testCollection.insertOne({ test: 'Connection successful', date: new Date() })
+    console.log('Inserted document with _id:', result.insertedId)
 
-        collections.forEach(c =>
-            console.log(c.collectionName)
-        )
-    } catch (e) {
-        console.error(e)
-    } finally {
-        await client.close()
-    }
+    // Fetch and print all documents in testCollection
+    const docs = await testCollection.find().toArray()
+    console.log('Documents in testCollection:', docs)
+
+  } catch (error) {
+    console.error('❌ Error connecting or inserting:', error)
+  } finally {
+    await client.close()
+  }
 }
 
-main().catch(console.error)
+main()

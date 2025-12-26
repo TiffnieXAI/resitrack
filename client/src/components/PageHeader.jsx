@@ -4,6 +4,9 @@ function PageHeader(){
     const location = useLocation()
     let NavHeadText = ''
     let NavDescText =''
+    let buttonAdd = ''
+    let buttonTitle = ''
+    let addButton = ''
 
     if (location.pathname === "/") {
         NavHeadText = "Dashboard";
@@ -20,17 +23,30 @@ function PageHeader(){
     } else if (location.pathname === "/map") {
         NavDescText = "Shows your live location, helping you stay aware of your surroundings anytime.";
     } else if (location.pathname === "/households") {
-    
+        NavDescText = "Displays the list of incidents occurring.";
+        buttonAdd = ''
+        buttonTitle = '+ Households'
     } else if (location.pathname === "/incidents") {
         NavDescText = "Displays the list of incidents occurring.";
+        buttonAdd = ''
+        buttonTitle = '+ Incidents'
     }
 
+    if(location.pathname === '/households' || location.pathname === '/incidents'){
+        addButton = <div className="addButton">{buttonTitle}</div>
+    }else {
+       
+    }
+    
+
     return(
-        <div className="PageHeader">
-            <p>{NavHeadText}</p> 
-            <p>{NavDescText}</p>
-        </div>
-        
+        <div className="pageHeaderWrap">
+            <div className="PageHeader">
+                <p>{NavHeadText}</p> 
+                <p>{NavDescText}</p>
+            </div>
+            {addButton}
+        </div>  
     )
 }
 

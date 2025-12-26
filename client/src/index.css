@@ -217,6 +217,14 @@ body {
   }
 }
 
+.pageHeaderWrap {
+  display: flex;
+  justify-content: space-between;
+  @media (max-width:720px) {
+    justify-content: flex-end;
+  }
+}
+
 .PageHeader p {
   font-size: 2.5vh;
   line-height: 3vh;
@@ -337,4 +345,47 @@ body {
   align-items: center;
   justify-content: center;
   height: 100%;
+}
+
+.addButton {
+  color: white;
+  background-color: #0E0F10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2%;
+  border-radius: 1vh;
+  cursor: pointer;
+  @media (max-width:720px) {
+    background-color:#373B3B ;
+    display: block;
+  }
+}
+
+.leaflet-control-zoom {
+  border: none;
+  box-shadow: none !important;
+}
+
+/* + and − buttons */
+.leaflet-control-zoom a {
+  background-color: #1B1D1D !important;  /* black */
+  color: #fff !important;             /* white symbols */
+  border: none !important;
+  font-weight: bold;
+  box-shadow: none !important;
+}
+
+/* Hover effect */
+.leaflet-control-zoom a:hover {
+  background-color: #1B1D1D !important;
+}
+
+/* Optional: rounded corners */
+.leaflet-control-zoom-in {
+  border-radius: 10px 10px 0 0 !important;
+}
+
+.leaflet-control-zoom-out {
+  border-radius: 0 0 10px 10px !important;
 }

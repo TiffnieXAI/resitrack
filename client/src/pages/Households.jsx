@@ -1,6 +1,6 @@
 import PageHeader from "../components/PageHeader"
 
-function Incidents(){
+function Households() {
     return(
         <div className="content-wrapper">
             <PageHeader></PageHeader>
@@ -9,4 +9,4 @@ function Incidents(){
     )
 }
 
-export default Incidents
+export default Households

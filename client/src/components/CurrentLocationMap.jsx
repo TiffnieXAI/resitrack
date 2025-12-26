@@ -18,9 +18,15 @@ L.Icon.Default.mergeOptions({
 // Recenter helper
 function Recenter({ position, zoom = 15 }) {
   const map = useMap();
+  const hasCentered = useRef(false);
+
   useEffect(() => {
-    if (position) map.setView(position, zoom);
+    if (position && !hasCentered.current) {
+      map.setView(position, zoom);
+      hasCentered.current = true;
+    }
   }, [position, map, zoom]);
+
   return null;
 }
 

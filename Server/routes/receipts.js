@@ -1,34 +1,17 @@
-const express = require("express")
-const router = express.Router()
-const { getDB } = require("../db/mongo")
+const express = require("express");
+const router = express.Router();
+const { getDB } = require("../db/mongo");
 
-// GET all receipts
+// GET /api/receipts - get all receipts
 router.get("/", async (req, res) => {
-    try {
-        const db = getDB()
-        const receipts = await db
-            .collection("receipts")
-            .find({})
-            .toArray()
+  try {
+    const db = getDB();
+    const receipts = await db.collection("receipts").find().toArray();
+    res.json(receipts);
+  } catch (error) {
+    console.error("Error fetching receipts:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
 
-        res.json(receipts)
-    } catch (err) {
-        res.status(500).json({ error: err.message })
-    }
-})
-
-// POST new receipt
-router.post("/", async (req, res) => {
-    try {
-        const db = getDB()
-        const result = await db
-            .collection("receipts")
-            .insertOne(req.body)
-
-        res.status(201).json(result)
-    } catch (err) {
-        res.status(500).json({ error: err.message })
-    }
-})
-
-module.exports = router
+module.exports = router;

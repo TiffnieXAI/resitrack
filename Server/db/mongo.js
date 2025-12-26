@@ -1,23 +1,21 @@
-const { MongoClient } = require("mongodb")
+const { MongoClient } = require("mongodb");
 
-let db
+let db;
 
 async function connectDB(uri) {
-    if (db) return db
+  if (db) return db;
 
-    const client = new MongoClient(uri)
-    await client.connect()
+  const client = new MongoClient(uri);
+  await client.connect();
 
-    console.log("MongoDB connected")
-    db = client.db("resitrack-cluster") // ⚠️ use your DATABASE name
-    return db
+  console.log("MongoDB connected");
+  db = client.db("resitrack");
+  return db;
 }
 
 function getDB() {
-    if (!db) {
-        throw new Error("Database not initialized")
-    }
-    return db
+  if (!db) throw new Error("Database not initialized");
+  return db;
 }
 
-module.exports = { connectDB, getDB }
+module.exports = { connectDB, getDB };
