@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
@@ -21,10 +23,11 @@ import static org.springframework.data.mongodb.core.query.Query.query;
 
 
 @RestController
+@RequestMapping("/households")
 public class HouseholdController {
 
     @Autowired
-    HouseholdRepository repo; // Makes the repository var for spring boot repository function
+    private HouseholdRepository repo; // Makes the repository var for spring boot repository function
 
     @Autowired
     private MongoOperations mongoOperations;
@@ -37,21 +40,25 @@ public class HouseholdController {
         return !Objects.isNull(counter) ? counter.getSeq() : 1;
     }
 
-    @GetMapping("/households") //Read data - GET
+    //Get all households - ADMIN Only
+    @GetMapping //Read data - GET
+    @PreAuthorize("hasRole('ADMIN')") //Method Security
     public List<Household> getHouseholds() {
         return repo.findAll();
     }
 
-    @GetMapping("/households/{id}") //Read data from specific household id
-    public ResponseEntity<Household> getHousehold(@PathVariable(value = "id") Long id) throws
-            ResourceNotFoundException {
-        Household household = repo.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("Household with ID " + id + " not found!"));
+    //Get household by ID - ONLY owner or admin
+    @GetMapping("/{id}")
+    @PreAuthorize("@securityService.isOwnerOrAdmin(authentication, #id)")
+    public ResponseEntity<Household> getHousehold(@PathVariable Long id) throws ResourceNotFoundException {
+        Household household = repo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Household with ID " + id + " not found!"));
         return ResponseEntity.ok(household);
     }
 
+
     @PostMapping("/register") //Create data - POST
-    public Household registerHousehold(@Valid @RequestBody Household household){
+    public Household registerHousehold(@Valid @RequestBody Household household, Authentication authentication) {
         Household tempHousehold = new Household();
         tempHousehold.setId(generateSequence(Household.SEQUENCE_NAME));
         tempHousehold.setName(household.getName());
@@ -60,11 +67,13 @@ public class HouseholdController {
         tempHousehold.setLongitude(household.getLongitude());
         tempHousehold.setContact(household.getContact());
         tempHousehold.setSpecialNeeds(household.getSpecialNeeds());
+        tempHousehold.setCreatedBy(authentication.getName());
         return repo.save(tempHousehold);
     }
 
-
-    @PutMapping("/households/update/{id}") //Update data
+    //Update household by ID - ONLY owner or admin
+    @PutMapping("/update/{id}") //Update data
+    @PreAuthorize("@securityService.isOwnerOrAdmin(authentication, #id)")
     public ResponseEntity <Household> updateHousehold(@PathVariable(value ="id") Long id,
                                                       @Valid @RequestBody Household householdDetails) throws ResourceNotFoundException {
         Household household = repo.findById(id).orElseThrow(() -> new ResourceNotFoundException("Household with ID " + id + " not found!")); //Check if household exists
@@ -80,7 +89,9 @@ public class HouseholdController {
         return ResponseEntity.ok(updatedHousehold);
     }
 
-    @DeleteMapping("/households/delete/{id}") //Delete household data using id
+    //Delete household by ID - ONLY owner or admin
+    @DeleteMapping("/delete/{id}") //Delete household data using id
+    @PreAuthorize("@securityService.isOwnerOrAdmin(authentication, #id)")
     public Map <String, Boolean> deleteHousehold(@PathVariable(value = "id") Long id) throws ResourceNotFoundException {
         Household household = repo.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Household with ID " + id + " not found!")); //Check if household exists

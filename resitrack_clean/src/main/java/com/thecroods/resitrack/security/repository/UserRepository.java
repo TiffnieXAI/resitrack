@@ -1,4 +1,4 @@
-package com.thecroods.resitrack.security.Repository;
+package com.thecroods.resitrack.security.repository;
 
 import com.thecroods.resitrack.security.models.UserModel;
 import org.springframework.data.mongodb.repository.MongoRepository;

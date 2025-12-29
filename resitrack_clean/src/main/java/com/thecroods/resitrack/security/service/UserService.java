@@ -1,34 +1,36 @@
 package com.thecroods.resitrack.security.service;
 
+import com.thecroods.resitrack.security.dtos.RegisterUserRequest;
+import com.thecroods.resitrack.security.dtos.UserResponse;
 import com.thecroods.resitrack.security.models.UserModel;
-import com.thecroods.resitrack.security.Repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.*;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import com.thecroods.resitrack.security.repository.UserRepository;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
-public class UserService implements UserDetailsService {
+public class UserService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    @Override
-    public UserDetails loadUserByUsername(String username)
-            throws UsernameNotFoundException {
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = new BCryptPasswordEncoder();
+    }
 
-        UserModel user = userRepository.findByUsername(username);
+    public UserResponse registerUser(RegisterUserRequest registerUserRequest) {
 
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found: " + username);
+        if(userRepository.existsById(registerUserRequest.getUsername())) {
+            throw new RuntimeException("Username is already in use!");
         }
 
-        return new User(
-                user.getUsername(),
-                user.getPassword(),
-                List.of(new SimpleGrantedAuthority("ROLE_USER"))
-        );
+        UserModel users = new UserModel();
+        users.setUsername(registerUserRequest.getUsername());
+        users.setPassword(passwordEncoder.encode(registerUserRequest.getPassword()));
+        users.setRole(registerUserRequest.getRole());
+        UserModel savedUser = userRepository.save(users);
+
+        return new UserResponse(savedUser.getId(), savedUser.getUsername(), savedUser.getRole().name());
     }
 }
