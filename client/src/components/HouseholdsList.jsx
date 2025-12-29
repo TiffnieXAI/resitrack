@@ -28,7 +28,7 @@ function HouseholdsList() {
             <strong>{h.name}</strong><br />
             Address: {h.address}<br />
             Contact: {h.contact}<br />
-            Status: {h.status}<br />
+            com.thecroods.resitrack.enums.Status: {h.status}<br />
             Special Needs: {h.specialNeeds || "None"}
           </li>
         ))}

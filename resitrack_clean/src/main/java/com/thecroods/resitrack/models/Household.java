@@ -1,4 +1,6 @@
 package com.thecroods.resitrack.models;
+
+import com.thecroods.resitrack.enums.Status;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -39,5 +41,7 @@ public class Household {
     private String contact;
 
     private String specialNeeds;
-    private String status = "unverified";
+
+    @NotNull
+    private Status status = Status.UNVERIFIED; //locked to enum, StatusService can only change it
 }
