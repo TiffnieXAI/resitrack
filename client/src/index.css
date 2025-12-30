@@ -362,6 +362,25 @@ body {
   }
 }
 
+.form-wrapper{
+  background-color: #0e0f1089;
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  top:0;
+  left: 0;
+  backdrop-filter: blur(2px);
+  display: flex;
+  justify-content: center;
+}
+
+.form-container {
+  border: 1px solid red;
+  width: 70%;
+  height: 100vh;
+  background-color: #282A2C;
+}
+
 .leaflet-control-zoom {
   border: none;
   box-shadow: none !important;

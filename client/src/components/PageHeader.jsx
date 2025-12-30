@@ -32,12 +32,22 @@ function PageHeader(){
         buttonTitle = '+ Incidents'
     }
 
+    const handleAddClick = () =>{
+        if(location.pathname === "/incidents"){
+            console.log("hello world")
+        }else if(location.pathname === "/households"){
+            console.log("bye")
+        }
+    }
+
     if(location.pathname === '/households' || location.pathname === '/incidents'){
-        addButton = <div className="addButton">{buttonTitle}</div>
+        addButton = <div className="addButton" onClick={handleAddClick}>{buttonTitle}</div>
     }else {
        
     }
     
+
+  
 
     return(
         <div className="pageHeaderWrap">
