@@ -16,7 +16,7 @@ public class StatusHistory {
     @Id
     private String id;
 
-    @NotBlank (message = "Houshold ID is required")
+    @NotBlank (message = "Household ID is required")
     private String householdId;
 
     @NotBlank(message = "Status is required")
