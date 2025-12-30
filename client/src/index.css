@@ -416,6 +416,10 @@ body {
   cursor: pointer;
 }
 
+#householdForm {
+  width: 100%;
+}
+
 .form-overlay {
   display: flex;
   justify-content: center;
@@ -424,12 +428,21 @@ body {
   background-color: rgba(0, 0, 0, 0.5);
 }
 
+.tab-content {
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
 .household-form {
-  background-color: transparent;
+  background-color:#0e0f10 ;
   padding: 20px;
   border-radius: 8px;
   border: none;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  
 }
 
 .incident-form {
@@ -446,6 +459,8 @@ body {
   color: white;
   margin-bottom: 10px;
   width: 100%;
+  border-radius: 0.5vh;
+  height: 5vh;
 }
 
 .coordinates {
@@ -490,4 +505,8 @@ body {
 
 .error-message {
   color: red; /* Style for error messages */
+}
+
+.hide-form {
+  display: none!important;
 }

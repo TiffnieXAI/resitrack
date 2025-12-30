@@ -14,7 +14,8 @@ app.use(express.json())
 
 // Routes
 app.use("/api/receipts", require("./routes/receipts"))
-app.use("/households", require("./routes/households"))
+app.use("/api/households", require("./routes/households"));
+
 
 // Start server AFTER DB connects
 connectDB(process.env.ATLAS_URI)
