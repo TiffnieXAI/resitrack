@@ -40,4 +40,5 @@ public class Household {
 
     private String specialNeeds;
     private String status = "unverified";
+    private String createdBy;
 }
