@@ -10,6 +10,10 @@ import com.thecroods.resitrack.repositories.StatusHistoryRepository;
 import com.thecroods.resitrack.services.DashboardWebSocketService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.mongodb.core.FindAndModifyOptions;
+import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -17,65 +21,72 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class StatusService {
 
-    private final HouseholdRepository householdRepository;
+    private final MongoOperations mongoOperations;
     private final StatusHistoryRepository statusHistoryRepository;
     private final DashboardWebSocketService dashboardWebSocketService;
 
     @Transactional
     public StatusHistoryResponse toggleStatus(Long householdId, Status newStatus) {
 
-        // 1️⃣ Validate input
         if (householdId == null || newStatus == null) {
             throw new BadRequestException("Household ID and new status must not be null");
         }
 
-        // 2️⃣ Fetch household safely
-        Household household = householdRepository.findById(householdId)
-                .orElseThrow(() -> new ResourceNotFoundException("Household not found"));
+        Query query = new Query(where("_id").is(householdId));
+        Update update = new Update().set("status", newStatus);
 
-        Status oldStatus = household.getStatus();
+        // returnOld = get the status before the update
+        Household oldHousehold = mongoOperations.findAndModify(
+                query,
+                update,
+                FindAndModifyOptions.options().returnNew(false),
+                Household.class
+        );
+
+        if (oldHousehold == null) {
+            throw new ResourceNotFoundException("Household not found");
+        }
+
+        Status oldStatus = oldHousehold.getStatus();
         if (oldStatus.equals(newStatus)) {
             throw new StatusAlreadySetException("Household is already in this status");
         }
 
-        // 3️⃣ Update household status
-        household.setStatus(newStatus);
-        householdRepository.save(household);
-
-        // 4️⃣ Get authenticated user safely
+        // 2️⃣ Get authenticated user
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String changedBy = (auth != null && auth.isAuthenticated() && auth.getName() != null)
                 ? auth.getName()
                 : "SYSTEM";
 
-        // 5️⃣ Create and save status history
+        // 3️⃣ Save status history
         StatusHistory history = new StatusHistory(
                 householdId.toString(),
                 oldStatus,
                 newStatus,
                 changedBy
         );
-        history.setCreatedAt(Instant.now()); // ensures timestamp even if auditing is disabled
+        history.setCreatedAt(Instant.now());
         StatusHistory savedHistory = statusHistoryRepository.save(history);
 
-
-        // Push dashboard update (WebSocket)
+        // 4️⃣ Push dashboard update
         dashboardWebSocketService.pushDashboardUpdate();
 
-        // 6️⃣ Logging
         log.info("Household {} status changed from {} to {} by {}", householdId, oldStatus, newStatus, changedBy);
 
-        // 7️⃣ Return immutable response DTO
+        // 5️⃣ Return response DTO
         return new StatusHistoryResponse(
-                Long.parseLong(savedHistory.getHouseholdId()),
-                savedHistory.getOldStatus(),
-                savedHistory.getNewStatus(),
-                savedHistory.getChangedBy(),
+                householdId,
+                oldStatus,
+                newStatus,
+                changedBy,
                 savedHistory.getCreatedAt()
         );
     }

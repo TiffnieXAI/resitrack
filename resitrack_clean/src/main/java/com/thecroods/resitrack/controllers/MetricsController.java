@@ -1,6 +1,7 @@
 package com.thecroods.resitrack.controllers;
 
 import com.thecroods.resitrack.models.MetricSnapshot;
+import com.thecroods.resitrack.services.DashboardWebSocketService;
 import com.thecroods.resitrack.services.MetricsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,5 +25,15 @@ public class MetricsController {
 
         // 2: return metrics to frontend
         return ResponseEntity.ok(snapshot); // JSON resp
+    }
+
+    @Autowired
+    private DashboardWebSocketService dashboardWebSocketService; // Autowired instance
+
+    // NEW: trigger WebSocket push for testing
+    @GetMapping("/trigger")
+    public ResponseEntity<String> triggerPush() {
+        dashboardWebSocketService.pushDashboardUpdate();
+        return ResponseEntity.ok("Dashboard update sent!");
     }
 }

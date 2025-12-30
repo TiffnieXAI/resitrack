@@ -1,5 +1,6 @@
 package com.thecroods.resitrack.config;
 
+
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 import org.springframework.context.annotation.Configuration;

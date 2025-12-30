@@ -1,10 +1,17 @@
+package com.thecroods.resitrack.exceptions;
+
 import com.thecroods.resitrack.exceptions.ResourceNotFoundException;
+import com.thecroods.resitrack.exceptions.StatusAlreadySetException;
+import org.apache.coyote.BadRequestException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
+import tools.jackson.databind.exc.InvalidFormatException;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -12,6 +19,43 @@ import java.util.Map;
 
 @RestControllerAdvice
 public class CustomExceptionHandler {
+    // In CustomExceptionHandler
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<?> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, WebRequest request) {
+        Throwable cause = ex.getMostSpecificCause();
+        String message = "Invalid request payload";
+
+        // Check if the root cause is our InvalidStatusException
+        if (cause instanceof InvalidStatusException) {
+            message = cause.getMessage();
+        } else if (cause instanceof InvalidFormatException) {
+            // Optional: handle other enum deserialization errors
+            message = "Invalid value for enum field";
+        }
+
+        Map<String, Object> body = new HashMap<>();
+        body.put("timestamp", new Date());
+        body.put("message", message);
+        body.put("path", request.getDescription(false));
+
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    }
+
+
+    // Handle InvalidStatusException
+    @ExceptionHandler(value = {InvalidStatusException.class})
+    public ResponseEntity<?> handleInvalidStatusException(InvalidStatusException ex, WebRequest request){
+        Map<String,Object> body = new HashMap<>();
+        body.put("timestamp", new Date());
+        body.put("message", ex.getMessage());
+        body.put("path", request.getDescription(false));
+
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    }
+
+
+
 
     // Resource not found
     @ExceptionHandler(value = {ResourceNotFoundException.class})

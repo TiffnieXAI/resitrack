@@ -1,13 +1,14 @@
 package com.thecroods.resitrack.enums;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.thecroods.resitrack.exceptions.InvalidStatusException;
 
 public enum Status {
     UNVERIFIED,
     SAFE,
     NOT_SAFE;
 
-    @JsonCreator
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
     public static Status from(String value) {
         if (value == null) {
             throw new IllegalArgumentException("Status cannot be null");
@@ -16,14 +17,12 @@ public enum Status {
         String normalized = value
                 .trim()
                 .toUpperCase()
-                .replaceAll("[\\s-]+", "_"); // "not safe", "not-safe" → NOT_SAFE
+                .replaceAll("[\\s-]+", "_");
 
         try {
             return Status.valueOf(normalized);
         } catch (IllegalArgumentException ex) {
-            throw new IllegalArgumentException(
-                    "Invalid status. Allowed values: UNVERIFIED, SAFE, NOT_SAFE"
-            );
+            throw new InvalidStatusException("Invalid status. Allowed values: UNVERIFIED, SAFE, NOT_SAFE");
         }
     }
 }

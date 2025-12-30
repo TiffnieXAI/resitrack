@@ -1,5 +1,3 @@
-
-@RestController
 package com.thecroods.resitrack.controllers;
 
 import com.thecroods.resitrack.dtos.StatusHistoryResponse;
@@ -20,11 +18,11 @@ public class StatusController {
     /**
      * Endpoint to toggle the status of a household.
      * Accepts a JSON body with householdId and newStatus.
-     *
+     * <p>
      * JSON body:
      * {
-     *   "householdId": 1,
-     *   "newStatus": "SAFE"
+     * "householdId": 1,
+     * "newStatus": "SAFE"
      * }
      *
      * @param request JSON request body mapped to StatusToggleRequest
@@ -32,9 +30,11 @@ public class StatusController {
      */
     @PostMapping("/toggle")
     public StatusHistoryResponse toggleStatus(@Valid @RequestBody StatusToggleRequest request) {
+        System.out.println("Received toggleStatus request: householdId=" + request.getHouseholdId() + ", newStatus=" + request.getNewStatus());
         return statusService.toggleStatus(
                 request.getHouseholdId(),
-                request.getNewStatus() // enum Status
+                request.getNewStatus()
         );
     }
 }
+
