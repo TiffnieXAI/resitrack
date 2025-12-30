@@ -389,3 +389,86 @@ body {
 .leaflet-control-zoom-out {
   border-radius: 0 0 10px 10px !important;
 }
+
+.register-button {
+  background-color: transparent;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.form-overlay {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.household-form {
+  background-color: transparent;
+  padding: 20px;
+  border-radius: 8px;
+  border: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.incident-form {
+  background-color: transparent;
+  padding: 20px;
+  border-radius: 8px;
+  border: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.form-input {
+  background-color: transparent;
+  border: 1px solid white;
+  color: white;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+.coordinates {
+  display: flex;
+  justify-content: space-between;
+}
+
+.button-group {
+  margin-top: 10px;
+}
+
+.submit-button,
+.cancel-button {
+  background-color: transparent;
+  color: white;
+  border: none;
+  cursor: pointer;
+  margin-left: 8px;
+}
+
+.list-incident-button {
+  background-color: transparent;
+  color: black;
+  border: none;
+  cursor: pointer;
+}
+
+.submit-button {
+  background-color: transparent;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.cancel-button {
+  margin-left: 10px;
+  background-color: transparent;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.error-message {
+  color: red; /* Style for error messages */
+}
