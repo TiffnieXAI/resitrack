@@ -54,7 +54,7 @@ body {
   justify-content: center;
   @media (max-width:720px) {
     width: 100%;
-    height: calc(100% - 16vh);
+    height: calc(100vh - 16vh);
   }
 }
 
@@ -211,9 +211,9 @@ body {
   height: 97%;
 }
 
-.PageHeader {
+.PageHeader p {
   @media (max-width:720px) {
-    display: none;
+   display: none;
   }
 }
 
@@ -358,7 +358,7 @@ body {
   cursor: pointer;
   @media (max-width:720px) {
     background-color:#373B3B ;
-    display: block;
+    display: block!important;
   }
 }
 
@@ -455,7 +455,7 @@ body {
 
 .form-input {
   background-color: transparent;
-  border: 1px solid white;
+  border: 1px solid rgb(150, 150, 150);
   color: white;
   margin-bottom: 10px;
   width: 100%;
@@ -470,15 +470,26 @@ body {
 
 .button-group {
   margin-top: 10px;
+  display: flex;
 }
 
 .submit-button,
 .cancel-button {
-  background-color: transparent;
+  
   color: white;
   border: none;
   cursor: pointer;
   margin-left: 8px;
+}
+
+.submit-button{
+  background-color: #282A2C!important;
+  padding: 1.3vh;
+  border-radius: 0.8vh;
+}
+
+.submit-button:hover{
+  background-color: #6e757c!important;
 }
 
 .list-incident-button {
@@ -509,4 +520,15 @@ body {
 
 .hide-form {
   display: none!important;
+}
+
+.form-input option {
+  background-color: #0e0f10;
+  font-size: 1.5vh;
+  color: #909090;
+}
+
+.form-input option:hover{
+  background-color: #252628!important;
+  color: rgb(201, 201, 201);
 }

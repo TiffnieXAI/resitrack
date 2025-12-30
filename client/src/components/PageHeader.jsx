@@ -18,12 +18,11 @@ function PageHeader() {
     if (!householdElement && !incidentElement) return
 
     if (path === "/households" || path === "/incidents") {
-      householdElement?.classList.remove("hide-form")
+      householdElement?.classList.add("hide-form")
       incidentElement?.classList.add("hide-form")
       
     } else {
-        incidentElement?.classList.remove("hide-form")
-      householdElement?.classList.add("hide-form")
+     
       
     }
   }
