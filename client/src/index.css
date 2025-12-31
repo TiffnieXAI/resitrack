@@ -22,6 +22,7 @@
 
 body {
   background-color: var(--background);
+  overflow-x: hidden;
 }
 
 .container {
@@ -531,4 +532,85 @@ body {
 .form-input option:hover{
   background-color: #252628!important;
   color: rgb(201, 201, 201);
+}
+
+.household-list-container {
+  display: flex;
+  flex-direction: column;
+  background-color: #0E0F10;
+  align-items: center;
+  padding: 1vh;
+  border-radius: 1.5vh;
+  margin-top: 3vh;
+}
+
+.household-list-header {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 2vh;
+  width: 95%;
+  border-bottom: 1px solid white;
+}
+
+.household-list-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 2vh;
+}
+
+.household-list-content{
+  width: 95%;
+  padding-top: 1vh;
+}
+
+.household-contents {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8vh;
+}
+
+.household-status-change{
+  display: flex;
+  align-items: center;
+  gap: 2vh;
+  margin-top: 2vh;
+  padding-bottom: 2vh;
+}
+
+.marksafe{
+  background-color: #D9D9D9;
+  font-weight: bold;
+  color: #2D2D2D;
+  padding:0.6vh 1vh ;
+  font-size: 1.8vh;
+  border-radius: 1vh;
+}
+
+.mark-notsafe {
+  font-weight: medium;
+  color: #8F8F8F;
+  font-size: 1.6vh;
+}
+
+.household-infos {
+  font-weight: bold;
+  display: flex;
+  font-size: 2vh;
+}
+
+.household-infos p {
+  font-weight:normal ;
+  margin-left: 1vh;
+}
+
+.hosuehold-list-name {
+  font-weight: bold;
+}
+
+.statusNot {
+  color: red;
+}
+
+.statusSafe {
+  color: green;
 }

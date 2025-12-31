@@ -2,6 +2,18 @@ const express = require("express");
 const router = express.Router();
 const { getDB } = require("../db/mongo"); // your MongoDB connection helper
 
+// GET /api/households - get all households
+router.get("/", async (req, res) => {
+  try {
+    const db = getDB();
+    const households = await db.collection("households").find().toArray();
+    res.json(households);
+  } catch (error) {
+    console.error("Error fetching households:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
 // POST /api/households - create a new household
 router.post("/", async (req, res) => {
   try {

@@ -1,7 +1,7 @@
 
 import PageHeader from "../components/PageHeader";
 import AddHouseHold from "../components/AddHousehold";
-
+import HouseHoldList from "../components/HouseHoldList";
 function Households() {
  
  
@@ -10,7 +10,7 @@ function Households() {
     <div className="content-wrapper ">
       <PageHeader />
       <AddHouseHold/>
-      
+      <HouseHoldList/>
     </div>
   );
 }
