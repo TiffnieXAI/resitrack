@@ -1,53 +1,77 @@
+import { useEffect } from "react"
 import { useLocation } from "react-router-dom"
 
-function PageHeader(){
-    const location = useLocation()
-    let NavHeadText = ''
-    let NavDescText =''
-    let buttonAdd = ''
-    let buttonTitle = ''
-    let addButton = ''
+function PageHeader() {
+  const location = useLocation()
 
-    if (location.pathname === "/") {
-        NavHeadText = "Dashboard";
-    } else if (location.pathname === "/map") {
-        NavHeadText = "Safety Map";
-    } else if (location.pathname === "/households") {
-        NavHeadText = "Register New Household";
-    } else if (location.pathname === "/incidents") {
-       NavHeadText = "Incidents";
+  // This function will run whenever the route changes
+  useEffect(() => {
+    onRouteChange(location.pathname)
+  }, [location.pathname])
+
+  // Handle side effects on route change here
+  const onRouteChange = (path) => {
+    const householdElement = document.getElementById("household")
+    const incidentElement = document.getElementById("incidents")
+
+    // If neither element exists, nothing to do
+    if (!householdElement && !incidentElement) return
+
+    if (path === "/households" || path === "/incidents") {
+      householdElement?.classList.add("hide-form")
+      incidentElement?.classList.add("hide-form")
+      
+    } else {
+     
+      
     }
+  }
 
-    if (location.pathname === "/") {
-        NavDescText = "Welcome back, Stan! Here is the summary for today.";
-    } else if (location.pathname === "/map") {
-        NavDescText = "Shows your live location, helping you stay aware of your surroundings anytime.";
-    } else if (location.pathname === "/households") {
-        NavDescText = "Displays the list of incidents occurring.";
-        buttonAdd = ''
-        buttonTitle = '+ Households'
-    } else if (location.pathname === "/incidents") {
-        NavDescText = "Displays the list of incidents occurring.";
-        buttonAdd = ''
-        buttonTitle = '+ Incidents'
-    }
+  let NavHeadText = ""
+  let NavDescText = ""
+  let buttonTitle = ""
+  let addButton = null
 
-    if(location.pathname === '/households' || location.pathname === '/incidents'){
-        addButton = <div className="addButton">{buttonTitle}</div>
-    }else {
-       
-    }
-    
+  if (location.pathname === "/") {
+    NavHeadText = "Dashboard"
+    NavDescText = "Welcome back, Stan! Here is the summary for today."
+  } else if (location.pathname === "/map") {
+    NavHeadText = "Safety Map"
+    NavDescText = "Shows your live location, helping you stay aware of your surroundings anytime."
+  } else if (location.pathname === "/households") {
+    NavHeadText = "Register New Household"
+    NavDescText = "Displays the list of incidents occurring."
+    buttonTitle = "+ Households"
+  } else if (location.pathname === "/incidents") {
+    NavHeadText = "Incidents"
+    NavDescText = "Displays the list of incidents occurring."
+    buttonTitle = "+ Incidents"
+  }
 
-    return(
-        <div className="pageHeaderWrap">
-            <div className="PageHeader">
-                <p>{NavHeadText}</p> 
-                <p>{NavDescText}</p>
-            </div>
-            {addButton}
-        </div>  
+  const handleAddClick = () => {
+    const householdElement = document.getElementById("household")
+    householdElement?.classList.remove("hide-form")
+    const incidentElement = document.getElementById("incidents")
+    incidentElement?.classList.remove("hide-form")
+  }
+
+  if (location.pathname === "/households" || location.pathname === "/incidents") {
+    addButton = (
+      <div className="addButton" onClick={handleAddClick}>
+        {buttonTitle}
+      </div>
     )
+  }
+
+  return (
+    <div className="pageHeaderWrap">
+      <div className="PageHeader">
+        <p>{NavHeadText}</p>
+        <p>{NavDescText}</p>
+      </div>
+      {addButton}
+    </div>
+  )
 }
 
 export default PageHeader

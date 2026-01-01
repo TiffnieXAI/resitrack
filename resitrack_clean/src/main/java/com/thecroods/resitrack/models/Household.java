@@ -44,4 +44,6 @@ public class Household {
     @Field("status")
     @NotNull
     private Status status = Status.UNVERIFIED; //locked to enum, StatusService can only change it
+
+    private String createdBy;
 }

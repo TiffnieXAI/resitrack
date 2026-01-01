@@ -6,8 +6,8 @@ function NavMobile(){
             <Link to='/'><div className="navButtMobile">H</div></Link>
             <Link to='/map'><div className="navButtMobile">H</div></Link>
             <Link to='/'><div className="navButtMobile">H</div></Link>
-            <Link to='/household'><div className="navButtMobile">H</div></Link>
-            <Link to='/incident'><div className="navButtMobile">H</div></Link>
+            <Link to='/households'><div className="navButtMobile">H</div></Link>
+            <Link to='/incidents'><div className="navButtMobile">H</div></Link>
         </div>
     )
 }
