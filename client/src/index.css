@@ -334,9 +334,10 @@ body {
     height: 8vh;
     display: flex;
     width: 100%;
-    position: sticky;
+    position: fixed;
     bottom: 0;
     z-index: 999999;
+    background-color: #0E0F10;
   }
 }
 
@@ -616,13 +617,21 @@ body {
 }
 
 .pagination-bar {
-  position: sticky;
-  bottom: 0;
+  position:sticky;
+  width: 100%;
+  bottom:0vh;
   background-color: #0E0F10;
   padding: 1.5vh 0;
   display: flex;
+  align-self: center;
   justify-content: center;
   gap: 2vh;
   border-top: 1px solid #40404060;
   z-index: 10;
+  @media (max-width:720px){
+    position: fixed;
+    bottom: 8vh;
+  }
 }
+
+
