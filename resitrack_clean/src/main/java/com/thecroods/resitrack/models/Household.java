@@ -1,4 +1,6 @@
 package com.thecroods.resitrack.models;
+
+import com.thecroods.resitrack.enums.Status;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -8,11 +10,11 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 //Use same parameters in db
 @Document(collection = "households")
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 public class Household {
 
@@ -20,8 +22,7 @@ public class Household {
     public static final String SEQUENCE_NAME = "household_seq"; //Auto increment ID
 
     @Id
-    @Generated
-    private Long id;
+    private long id;
 
     @NotBlank(message = "Name is required")
     private String name;
@@ -39,6 +40,10 @@ public class Household {
     private String contact;
 
     private String specialNeeds;
-    private String status = "unverified";
+
+    @Field("status")
+    @NotNull
+    private Status status = Status.UNVERIFIED; //locked to enum, StatusService can only change it
+
     private String createdBy;
 }
