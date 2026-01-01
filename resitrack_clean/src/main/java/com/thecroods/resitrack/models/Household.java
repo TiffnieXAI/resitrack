@@ -22,7 +22,7 @@ public class Household {
     public static final String SEQUENCE_NAME = "household_seq"; //Auto increment ID
 
     @Id
-    private long id;
+    private Long id;
 
     @NotBlank(message = "Name is required")
     private String name;

@@ -37,7 +37,17 @@ public class SecurityConfiguration {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
                         .requestMatchers( "/api/users/register", "/login").permitAll()
-                        .anyRequest().authenticated()
+                        // 🔓 allow websocket handshake
+                        .requestMatchers("/ws/**").permitAll()
+
+                        // 🔓 allow metrics read (optional)
+                        .requestMatchers("/api/metrics/**").permitAll()
+
+                        // 🔓 allow auth endpoints if you have them
+                        .requestMatchers("/api/auth/**").permitAll()
+                        // change den to later
+                        .requestMatchers("/api/status/**").permitAll()
+                        .anyRequest().permitAll()
                 )
                 .exceptionHandling(ex -> ex
                                 .authenticationEntryPoint(authenticationEntryPoint)

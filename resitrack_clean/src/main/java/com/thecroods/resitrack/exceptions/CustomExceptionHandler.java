@@ -44,7 +44,6 @@ public class CustomExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
 
-
     // Handle InvalidStatusException
     @ExceptionHandler(value = {InvalidStatusException.class})
     public ResponseEntity<?> handleInvalidStatusException(InvalidStatusException ex, WebRequest request){
@@ -55,9 +54,6 @@ public class CustomExceptionHandler {
 
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
-
-
-
 
     // Resource not found
     @ExceptionHandler(value = {ResourceNotFoundException.class})
@@ -109,17 +105,6 @@ public class CustomExceptionHandler {
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 
-    // Fallback / generic exception
-    @ExceptionHandler(value = {Exception.class})
-    public ResponseEntity<?> handleGenericException(Exception exception, WebRequest request){
-        Map<String,Object> body = new HashMap<>();
-        body.put("timestamp", new Date());
-        body.put("message", "An unexpected error occurred");
-        body.put("path", request.getDescription(false));
-
-        return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
     // Handle legacy IllegalArgumentException
     @ExceptionHandler(value = {IllegalArgumentException.class})
     public ResponseEntity<Map<String, String>> handleIllegalArgument(IllegalArgumentException ex) {
@@ -127,7 +112,6 @@ public class CustomExceptionHandler {
         error.put("error", ex.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
-
 
     // 403 - Access denied Exception
     @ExceptionHandler(AccessDeniedException.class)
