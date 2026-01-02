@@ -64,7 +64,7 @@ router.patch("/:id", async (req, res) => {
   }
 });
 
-// PUT /api/households/:id - full replace update
+// PUT /api/households/:id - full replace update with validation
 router.put("/:id", async (req, res) => {
   try {
     const db = getDB();
@@ -74,11 +74,24 @@ router.put("/:id", async (req, res) => {
       return res.status(400).json({ message: "Invalid household ID" });
     }
 
-    // Remove _id from req.body before replace
-    const { _id, ...rest } = req.body;
+    const { _id, name, address, contact, status, specialNeeds } = req.body;
+
+    // Validation: required fields and types
+    if (
+      !name || typeof name !== "string" ||
+      !address || typeof address !== "string" ||
+      !contact || typeof contact !== "string" ||
+      !status || typeof status !== "string"
+    ) {
+      return res.status(400).json({ message: "Missing or invalid required fields" });
+    }
 
     const newHousehold = {
-      ...rest,
+      name,
+      address,
+      contact,
+      status,
+      specialNeeds: typeof specialNeeds === "string" ? specialNeeds : "",
       _class: "com.thecroods.resitrack.models.Household",
     };
 
@@ -99,7 +112,6 @@ router.put("/:id", async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 });
-
 
 // DELETE /api/households/:id - delete household
 router.delete("/:id", async (req, res) => {
