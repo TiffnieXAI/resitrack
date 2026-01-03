@@ -6,7 +6,6 @@ import NavMobile from "./components/NavMobile.jsx";
 import Maps from "./pages/Maps.jsx";
 import Incidents from "./pages/Incidents.jsx";
 import Households from "./pages/Households.jsx";
-
 import Login from "./pages/Login.jsx";
 function App() {
   return (
@@ -23,6 +22,15 @@ function App() {
                   <Home></Home>
                 </div>
               </div>
+            }
+          ></Route>
+
+          <Route
+            path="/login"
+            element={
+              
+                  <Login></Login>
+              
             }
           ></Route>
 

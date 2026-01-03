@@ -1,18 +1,22 @@
 import { Link, useLocation } from "react-router-dom"
 import Icon from '../assets/darkIcon01t.png'
-
+import Logout from "./Logout";
 function NavPage(){
     const location = useLocation();
 
+    if (location.pathname === "/login") {
+    return null;
+  }
+
     return(
-    <div className="navContainer">
+    <div className="navContainer" id="NavContent" >
         <div className="navTitle">
             <div>
                 <img src={Icon} className="navIcon"></img><p>ResiTrack</p><div className="mobileProfileImage"></div>
             </div>
         </div>
         
-        <div className="navContent">
+        <div className="navContent" >
             <div className="navWrapper">
                 <div className="navDivider"></div>
                 <div className="navProfileWrapper">
@@ -34,6 +38,7 @@ function NavPage(){
                 <div className="navDivider"></div>
             </div>
         </div>
+        <Logout>Sign out</Logout>
     </div>
     )
 }

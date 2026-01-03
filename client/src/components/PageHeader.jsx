@@ -63,6 +63,10 @@ function PageHeader() {
     )
   }
 
+  if(location.pathname === "/login"){
+    
+  }
+
   return (
     <div className="pageHeaderWrap">
       <div className="PageHeader">
