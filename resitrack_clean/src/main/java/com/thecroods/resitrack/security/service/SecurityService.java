@@ -21,7 +21,7 @@ public class SecurityService {
         this.incidentRepository = incidentRepository;
     }
 
-    //Household
+    // Check if user is the owner of the household
 
     public boolean isOwnerOrAdmin(Authentication auth, Long householdId) {
         if (auth == null || !auth.isAuthenticated()) return false;
@@ -30,11 +30,11 @@ public class SecurityService {
 
         Optional<Household> householdOpt = householdRepository.findById(householdId);
         return householdOpt
-                .map(h -> auth.getName().equals(h.getCreatedBy()))
+                .map(h -> h.getCreatedBy().equals(auth.getName()))
                 .orElse(false);
     }
 
-    //Incident
+    // Check if user is the owner of the incidents
 
     public boolean isIncidentOwnerOrAdmin(Authentication auth, Long incidentId) {
         if (auth == null || !auth.isAuthenticated()) return false;
@@ -43,11 +43,11 @@ public class SecurityService {
 
         Optional<Incident> incidentOpt = incidentRepository.findById(incidentId);
         return incidentOpt
-                .map(i -> auth.getName().equals(i.getReportedBy()))
+                .map(i -> i.getReportedBy().equals(auth.getName()))
                 .orElse(false);
     }
 
-    //Common
+    // Check if user has ROLE_ADMIN
 
     private boolean isAdmin(Authentication auth) {
         return auth.getAuthorities().stream()
