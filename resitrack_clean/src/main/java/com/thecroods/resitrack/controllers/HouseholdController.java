@@ -4,6 +4,7 @@ import com.thecroods.resitrack.exceptions.ResourceNotFoundException;
 import com.thecroods.resitrack.models.Household;
 import com.thecroods.resitrack.models.HouseholdSequence;
 import com.thecroods.resitrack.repositories.HouseholdRepository;
+import com.thecroods.resitrack.services.DashboardWebSocketService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
@@ -31,6 +32,8 @@ public class HouseholdController {
 
     @Autowired
     private MongoOperations mongoOperations;
+    @Autowired
+    private DashboardWebSocketService dashboardWebSocketService;
 
     //Auto increment ID
     public long generateSequence(String seqName) {
@@ -69,7 +72,12 @@ public class HouseholdController {
         tempHousehold.setContact(household.getContact());
         tempHousehold.setSpecialNeeds(household.getSpecialNeeds());
         tempHousehold.setCreatedBy(authentication.getName());
-        return repo.save(tempHousehold);
+
+        Household saved = repo.save(tempHousehold);
+
+        dashboardWebSocketService.pushDashboardUpdate();
+
+        return saved;
     }
 
     //Update household by ID - ONLY owner or admin
@@ -98,8 +106,12 @@ public class HouseholdController {
                 () -> new ResourceNotFoundException("Household with ID " + id + " not found!")); //Check if household exists
         //Deletes household
         repo.delete(household);
+
+        dashboardWebSocketService.pushDashboardUpdate();
+
         Map <String, Boolean> response = new HashMap<>();
         response.put("deleted", Boolean.TRUE);
+
         return response;
     }
 }
