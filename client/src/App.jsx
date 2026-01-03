@@ -7,6 +7,7 @@ import Maps from "./pages/Maps.jsx";
 import Incidents from "./pages/Incidents.jsx";
 import Households from "./pages/Households.jsx";
 import Login from "./pages/Login.jsx";
+import AuthGuard from "./components/AuthGuard.jsx";
 function App() {
   return (
     <>
@@ -19,7 +20,10 @@ function App() {
             element={
               <div className="wrapper">
                 <div className="contentBody">
-                  <Home></Home>
+                  <AuthGuard>
+                    <Home></Home>
+                  </AuthGuard>
+                  
                 </div>
               </div>
             }
@@ -39,7 +43,9 @@ function App() {
             element={
               <div className="wrapper">
                 <div className="contentBody">
-                  <Maps></Maps>
+                  <AuthGuard>
+                    <Maps></Maps>
+                  </AuthGuard>
                 </div>
               </div>
             }
@@ -50,7 +56,10 @@ function App() {
             element={
               <div className="wrapper">
                 <div className="contentBody">
-                  <Households></Households>
+                  <AuthGuard>
+                    <Households></Households>
+                  </AuthGuard>
+                  
                 </div>
               </div>
             }
@@ -61,7 +70,10 @@ function App() {
             element={
               <div className="wrapper">
                 <div className="contentBody">
-                  <Incidents></Incidents>
+                  <AuthGuard>
+                    <Incidents></Incidents>
+                  </AuthGuard>
+                  
                 </div>
               </div>
             }

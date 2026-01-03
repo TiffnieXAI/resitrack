@@ -5,13 +5,13 @@ import AuthGuard from "../components/AuthGuard";
 
 function Households() {
   return (
-    <AuthGuard>
+    
       <div className="content-wrapper">
         <PageHeader />
         <AddHouseHold />
         <HouseHoldList />
       </div>
-    </AuthGuard>
+    
   );
 }
 
