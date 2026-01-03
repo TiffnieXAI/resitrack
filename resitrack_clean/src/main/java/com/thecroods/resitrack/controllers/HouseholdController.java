@@ -58,6 +58,7 @@ public class HouseholdController {
 
 
     @PostMapping("/register") //Create data - POST
+    @PreAuthorize("isAuthenticated()")
     public Household registerHousehold(@Valid @RequestBody Household household, Authentication authentication) {
         Household tempHousehold = new Household();
         tempHousehold.setId(generateSequence(Household.SEQUENCE_NAME));
