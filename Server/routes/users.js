@@ -2,9 +2,8 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const { getDB } = require("../db/mongo");
-const { ObjectId } = require("mongodb");
 
-// Login route
+// LOGIN
 router.post("/login", async (req, res) => {
   const { username, password } = req.body;
   const db = getDB();
@@ -25,36 +24,44 @@ router.post("/login", async (req, res) => {
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    // Save user info in session (avoid saving password)
-    req.session.user = {
+    // Store user in session (no password)
+    const sessionUser = {
       id: user._id,
       username: user.username,
-      role: user.role,
+      role: user.role || "ROLE_USER",
     };
 
-    res.json({ message: "Login successful", user: req.session.user });
+    req.session.user = sessionUser;
+
+    res.json({
+      message: "Login successful",
+      user: sessionUser,
+    });
   } catch (error) {
     console.error("Login error:", error);
     res.status(500).json({ message: "Server error" });
   }
 });
 
-// Logout route
+// LOGOUT
 router.post("/logout", (req, res) => {
   req.session.destroy((err) => {
     if (err) {
       console.error("Logout error:", err);
       return res.status(500).json({ message: "Logout failed" });
     }
-    res.clearCookie("connect.sid");
+    res.clearCookie("resitrack.sid");
     res.json({ message: "Logged out successfully" });
   });
 });
 
-// Check session route
+// CHECK SESSION
 router.get("/session", (req, res) => {
   if (req.session.user) {
-    res.json({ loggedIn: true, user: req.session.user });
+    res.json({
+      loggedIn: true,
+      user: req.session.user,
+    });
   } else {
     res.json({ loggedIn: false });
   }

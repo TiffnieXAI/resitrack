@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+const API_BASE = "http://localhost:5000";
+
 function LoginBar() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -11,11 +13,11 @@ function LoginBar() {
     setError("");
 
     try {
-      const res = await fetch("http://localhost:5000/api/users/login", { // fixed URL here
+      const res = await fetch(`${API_BASE}/api/users/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        credentials: "include", // 🔥 REQUIRED
-        body: JSON.stringify({ username, password })
+        credentials: "include", // MUST have this for sessions
+        body: JSON.stringify({ username, password }),
       });
 
       const data = await res.json();
@@ -25,13 +27,23 @@ function LoginBar() {
         return;
       }
 
-      // ✅ LOGIN SUCCESS
-      navigate("/"); // redirect to dashboard
+      // Save user info to localStorage for permission checking
+      // Adjust these fields according to what your backend sends back!
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          id: data.user._id || data.user.id, // or however your backend sends the user ID
+          role: data.user.role,               // role string e.g. "ROLE_ADMIN"
+        })
+      );
+
+      navigate("/");
     } catch (err) {
       console.error(err);
       setError("Server error");
     }
   };
+
 
   return (
     <div className="login-wrapper">
@@ -45,7 +57,6 @@ function LoginBar() {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
             />
-
             <input
               type="password"
               placeholder="Password"

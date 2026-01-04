@@ -1,11 +1,86 @@
 import React, { useEffect, useState, useRef } from "react";
-import { MapContainer, TileLayer, Marker, Circle, useMap } from "react-leaflet";
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Circle,
+  Tooltip,
+  useMap,
+} from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
+// Add this CSS in your global stylesheet or in a <style> tag somewhere:
+/*
+.leaflet-tooltip.my-custom-tooltip {
+  background: white !important;
+  color: black !important;
+  border-radius: 6px;
+  padding: 6px 10px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.2);
+  font-weight: 600;
+  font-size: 14px;
+}
+*/
+
+// Person icon (blue marker)
+const personIcon = new L.Icon({
+  iconUrl:
+    "https://cdn-icons-png.flaticon.com/512/1077/1077114.png", // person icon
+  iconSize: [32, 32],
+  iconAnchor: [16, 32],
+  popupAnchor: [0, -32],
+  tooltipAnchor: [16, -32],
+  shadowUrl:
+    "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
+  shadowSize: [41, 41],
+  shadowAnchor: [14, 41],
+});
+
+// House icons colored by status
+const houseIconSafe = new L.Icon({
+  iconUrl:
+    "https://cdn-icons-png.flaticon.com/512/616/616408.png", // green house icon
+  iconSize: [32, 32],
+  iconAnchor: [16, 32],
+  popupAnchor: [0, -32],
+  tooltipAnchor: [16, -32],
+  shadowUrl:
+    "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
+  shadowSize: [41, 41],
+  shadowAnchor: [14, 41],
+});
+
+const houseIconNotSafe = new L.Icon({
+  iconUrl:
+    "https://cdn-icons-png.flaticon.com/512/565/565547.png", // red house icon
+  iconSize: [32, 32],
+  iconAnchor: [16, 32],
+  popupAnchor: [0, -32],
+  tooltipAnchor: [16, -32],
+  shadowUrl:
+    "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
+  shadowSize: [41, 41],
+  shadowAnchor: [14, 41],
+});
+
+const houseIconUnverified = new L.Icon({
+  iconUrl:
+    "https://cdn-icons-png.flaticon.com/512/1946/1946488.png", // gray house icon
+  iconSize: [32, 32],
+  iconAnchor: [16, 32],
+  popupAnchor: [0, -32],
+  tooltipAnchor: [16, -32],
+  shadowUrl:
+    "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
+  shadowSize: [41, 41],
+  shadowAnchor: [14, 41],
+});
+
 // Fix default marker icon issues
 const iconUrl = "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png";
-const iconRetinaUrl = "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png";
+const iconRetinaUrl =
+  "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png";
 const shadowUrl = "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png";
 
 delete L.Icon.Default.prototype._getIconUrl;
@@ -42,9 +117,17 @@ export default function CurrentLocationMap({
   const watchIdRef = useRef(null);
   const mapRef = useRef(null);
 
+  const [households, setHouseholds] = useState([]);
+
+  // Get current user info and role from localStorage
+  const storedUser = JSON.parse(localStorage.getItem("user"));
+  const userRole = storedUser?.role;
+  const currentUserId = storedUser?.id;
+
   // Dark mode toggle
   const [darkMode, setDarkMode] = useState(true);
 
+  // Get user location
   useEffect(() => {
     if (!("geolocation" in navigator)) {
       setError("Geolocation is not supported by your browser.");
@@ -79,9 +162,35 @@ export default function CurrentLocationMap({
     }
 
     return () => {
-      if (watchIdRef.current !== null) navigator.geolocation.clearWatch(watchIdRef.current);
+      if (watchIdRef.current !== null)
+        navigator.geolocation.clearWatch(watchIdRef.current);
     };
   }, [watch]);
+
+  // Fetch households from API depending on role
+  useEffect(() => {
+    const fetchHouseholds = async () => {
+      try {
+        const res = await fetch("http://localhost:5000/api/households", {
+          credentials: "include",
+        });
+        if (!res.ok) throw new Error("Failed to fetch households");
+        const data = await res.json();
+
+        let filteredData = data;
+        if (userRole === "ROLE_USER") {
+          filteredData = data.filter(
+            (h) => String(h.createdBy) === String(currentUserId)
+          );
+        }
+
+        setHouseholds(filteredData);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchHouseholds();
+  }, [userRole, currentUserId]);
 
   const handleCenter = () => {
     if (pos && mapRef.current) {
@@ -89,10 +198,18 @@ export default function CurrentLocationMap({
     }
   };
 
-  return (
-    <div className="h-[70vh] md:h-[80vh] w-full rounded-2xl shadow-lg overflow-hidden p-2">
-      <div className="relative h-full w-full">
+  // Choose house icon by status
+  const getHouseIcon = (status) => {
+    if (!status) return houseIconUnverified;
+    const lower = status.toLowerCase();
+    if (lower === "safe") return houseIconSafe;
+    if (lower === "not safe") return houseIconNotSafe;
+    return houseIconUnverified;
+  };
 
+  return (
+    <div className="h-[70vh] md:h-[80vh] w-full rounded-2xl shadow-lg overflow-hidden p-2 map-con">
+      <div className="relative h-full w-full">
         {/* Error Overlay */}
         {error && (
           <div className="absolute z-20 top-4 left-4 bg-white bg-opacity-90 p-3 rounded shadow">
@@ -115,7 +232,7 @@ export default function CurrentLocationMap({
           style={{ height: "100%", width: "100%" }}
           whenCreated={(mapInstance) => (mapRef.current = mapInstance)}
         >
-          {/* 🌙 DARK / ☀️ LIGHT TILE SWITCH — No Grid */}
+          {/* DARK / LIGHT TILE SWITCH */}
           <TileLayer
             attribution="&copy; OpenStreetMap &copy; Stadia Maps"
             url={
@@ -125,9 +242,10 @@ export default function CurrentLocationMap({
             }
           />
 
+          {/* Current user location marker with person icon */}
           {pos && (
             <>
-              <Marker position={pos} />
+              <Marker position={pos} icon={personIcon} />
 
               {accuracy && (
                 <Circle
@@ -145,6 +263,34 @@ export default function CurrentLocationMap({
               <Recenter position={pos} />
             </>
           )}
+
+          {/* Household markers with house icons */}
+          {households.map((household) => {
+            // Parse lat/lng as numbers, fallback to 0 if invalid
+            const lat = parseFloat(household.latitude) || 0;
+            const lng = parseFloat(household.longitude) || 0;
+
+            return (
+              <Marker
+                key={household._id}
+                position={[lat, lng]}
+                icon={getHouseIcon(household.status)}
+              >
+                <Tooltip
+                  direction="top"
+                  offset={[0, -30]}
+                  permanent={false}
+                  className="my-custom-tooltip"
+                >
+                  <div>
+                    <strong>{household.name}</strong>
+                    <br />
+                    Status: {household.status || "unverified"}
+                  </div>
+                </Tooltip>
+              </Marker>
+            );
+          })}
         </MapContainer>
 
         {/* Controls */}
@@ -158,7 +304,8 @@ export default function CurrentLocationMap({
 
           <button
             onClick={() => {
-              if (!("geolocation" in navigator)) return setError("Geolocation not supported");
+              if (!("geolocation" in navigator))
+                return setError("Geolocation not supported");
               setLoading(true);
 
               if (watchIdRef.current !== null) {
@@ -174,7 +321,7 @@ export default function CurrentLocationMap({
                   (e) => {
                     setError(e.message);
                     setLoading(false);
-                  },
+                  }
                 );
               } else {
                 watchIdRef.current = navigator.geolocation.watchPosition(
@@ -187,7 +334,7 @@ export default function CurrentLocationMap({
                     setError(e.message);
                     setLoading(false);
                   },
-                  { enableHighAccuracy: true, maximumAge: 10000, timeout: 20000 },
+                  { enableHighAccuracy: true, maximumAge: 10000, timeout: 20000 }
                 );
               }
             }}

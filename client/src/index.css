@@ -4,11 +4,19 @@
 @tailwind components;
 @tailwind utilities;
 
-*  {
+.leaflet-tooltip.my-custom-tooltip {
+  color: black !important;
+}
+
+.map-con {
+  color: black !important;
+}
+
+*:not(.map-con)  {
   padding: 0;
   margin: 0;
   font-family: 'Inter';
-  color: white;
+  
   text-decoration: none;
 }
 
@@ -29,6 +37,7 @@ body {
   width: 100vw;
   height: 100vh;
   display: flex;
+  color: white;
   @media (max-width:720px) {
     flex-direction: column;
   }
@@ -38,6 +47,7 @@ body {
   width:15%;
   display: flex;
   flex-direction: column;
+  color: white;
 
   @media (max-width:1600px) {
     width: 25%;
@@ -178,7 +188,7 @@ body {
   width: 100%;
   transition: 0.2s;
   cursor: pointer;
-
+  color: white;
 }
 
 .navButton p {
@@ -340,6 +350,7 @@ body {
     bottom: 0;
     z-index: 999999;
     background-color: #0E0F10;
+    
   }
 }
 
@@ -349,6 +360,7 @@ body {
   align-items: center;
   justify-content: center;
   height: 100%;
+  color: white;
 }
 
 .addButton {
@@ -560,6 +572,11 @@ body {
   display: flex;
   justify-content: space-between;
   gap: 2vh;
+  color: white !important;;
+}
+
+.edit-household {
+  color: white;
 }
 
 .household-list-content{
@@ -713,3 +730,20 @@ body {
   position: fixed;
   align-self: center;
 }
+.edit-household {
+  color: white;
+  cursor: pointer;
+  /* other styles */
+}
+
+
+.leaflet-tooltip.my-custom-tooltip {
+  background: white !important;
+  color: black !important;
+  border-radius: 6px;
+  padding: 6px 10px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.2);
+  font-weight: 600;
+  font-size: 14px;
+}
+

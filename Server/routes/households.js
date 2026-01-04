@@ -2,11 +2,26 @@ const express = require("express");
 const router = express.Router();
 const { getDB } = require("../db/mongo");
 
-// GET /api/households - get all households
-router.get("/", async (req, res) => {
+// Middleware to check user session
+function authMiddleware(req, res, next) {
+  if (!req.session.user) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+  next();
+}
+
+// GET households
+router.get("/", authMiddleware, async (req, res) => {
   try {
     const db = getDB();
-    const households = await db.collection("households").find().toArray();
+    const user = req.session.user;
+
+    let query = {};
+    if (user.role !== "ROLE_ADMIN") {
+      query.createdBy = user.id;
+    }
+
+    const households = await db.collection("households").find(query).toArray();
     res.json(households);
   } catch (error) {
     console.error("Error fetching households:", error);
@@ -14,14 +29,16 @@ router.get("/", async (req, res) => {
   }
 });
 
-// POST /api/households - create a new household with numeric _id
-router.post("/", async (req, res) => {
+// POST new household
+router.post("/", authMiddleware, async (req, res) => {
   try {
     const db = getDB();
+    const user = req.session.user;
 
-    // Find current max numeric _id in the collection
-    const lastHousehold = await db.collection("households")
-      .find({ _id: { $type: "number" } }) // ensure we only compare numeric _id
+    // Find max numeric _id
+    const lastHousehold = await db
+      .collection("households")
+      .find({ _id: { $type: "number" } })
       .sort({ _id: -1 })
       .limit(1)
       .toArray();
@@ -32,11 +49,9 @@ router.post("/", async (req, res) => {
       _id: newId,
       ...req.body,
       status: "unverified",
-      createdBy: "",
+      createdBy: user.id,
       _class: "com.thecroods.resitrack.models.Household",
     };
-
-    console.log("Inserting household with _id:", newId);
 
     const result = await db.collection("households").insertOne(householdData);
 
@@ -47,15 +62,22 @@ router.post("/", async (req, res) => {
   }
 });
 
-
-// PATCH /api/households/:id - partial update (now with numeric _id)
-router.patch("/:id", async (req, res) => {
+// PATCH household
+router.patch("/:id", authMiddleware, async (req, res) => {
   try {
     const db = getDB();
+    const user = req.session.user;
     const householdId = Number(req.params.id);
 
     if (isNaN(householdId)) {
       return res.status(400).json({ message: "Invalid household ID" });
+    }
+
+    const household = await db.collection("households").findOne({ _id: householdId });
+    if (!household) return res.status(404).json({ message: "Household not found" });
+
+    if (user.role !== "ROLE_ADMIN" && household.createdBy !== user.id) {
+      return res.status(403).json({ message: "Forbidden" });
     }
 
     const updateFields = req.body;
@@ -69,71 +91,30 @@ router.patch("/:id", async (req, res) => {
       return res.status(404).json({ message: "Household not found" });
     }
 
-    res.json({ message: "Household updated" });
+    const updated = await db.collection("households").findOne({ _id: householdId });
+    res.json(updated);
   } catch (error) {
     console.error("Error updating household:", error);
     res.status(500).json({ message: "Internal Server Error" });
   }
 });
 
-// PUT /api/households/:id - full replace update with numeric _id
-router.put("/:id", async (req, res) => {
+// DELETE household
+router.delete("/:id", authMiddleware, async (req, res) => {
   try {
     const db = getDB();
+    const user = req.session.user;
     const householdId = Number(req.params.id);
 
     if (isNaN(householdId)) {
       return res.status(400).json({ message: "Invalid household ID" });
     }
 
-    const { name, address, contact, status, specialNeeds } = req.body;
+    const household = await db.collection("households").findOne({ _id: householdId });
+    if (!household) return res.status(404).json({ message: "Household not found" });
 
-    // Validation: required fields and types
-    if (
-      !name || typeof name !== "string" ||
-      !address || typeof address !== "string" ||
-      !contact || typeof contact !== "string" ||
-      !status || typeof status !== "string"
-    ) {
-      return res.status(400).json({ message: "Missing or invalid required fields" });
-    }
-
-    const newHousehold = {
-      _id: householdId,
-      name,
-      address,
-      contact,
-      status,
-      specialNeeds: typeof specialNeeds === "string" ? specialNeeds : "",
-      _class: "com.thecroods.resitrack.models.Household",
-    };
-
-    console.log("Replacing household with data:", newHousehold);
-
-    const result = await db.collection("households").replaceOne(
-      { _id: householdId },
-      newHousehold
-    );
-
-    if (result.matchedCount === 0) {
-      return res.status(404).json({ message: "Household not found" });
-    }
-
-    res.json({ message: "Household replaced" });
-  } catch (error) {
-    console.error("Error replacing household:", error);
-    res.status(500).json({ message: "Internal Server Error" });
-  }
-});
-
-// DELETE /api/households/:id - delete household with numeric _id
-router.delete("/:id", async (req, res) => {
-  try {
-    const db = getDB();
-    const householdId = Number(req.params.id);
-
-    if (isNaN(householdId)) {
-      return res.status(400).json({ message: "Invalid household ID" });
+    if (user.role !== "ROLE_ADMIN" && household.createdBy !== user.id) {
+      return res.status(403).json({ message: "Forbidden" });
     }
 
     const result = await db.collection("households").deleteOne({ _id: householdId });

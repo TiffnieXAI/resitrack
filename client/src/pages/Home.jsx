@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import PageHeader from "../components/PageHeader";
 
+const API_BASE = "http://localhost:5000";
+
 function Home() {
   const [stats, setStats] = useState({
     total: 0,
@@ -11,16 +13,20 @@ function Home() {
   });
 
   useEffect(() => {
-    // Fetch households data from your backend
-    fetch("http://localhost:5000/api/households", {
+    fetch(`${API_BASE}/api/households`, {
       credentials: "include",
     })
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+        return res.json();
+      })
       .then((households) => {
         const total = households.length;
-        const safe = households.filter(h => h.status === "safe").length;
-        const danger = households.filter(h => h.status === "not safe").length;
-        const unverified = households.filter(h => h.status !== "safe" && h.status !== "danger").length;
+        const safe = households.filter((h) => h.status === "safe").length;
+        const danger = households.filter((h) => h.status === "not safe").length;
+        const unverified = households.filter(
+          (h) => h.status !== "safe" && h.status !== "not safe"
+        ).length;
         const safetyPercentage = total > 0 ? `${((safe / total) * 100).toFixed(1)}%` : "0%";
 
         setStats({ total, safe, danger, unverified, safetyPercentage });
@@ -34,6 +40,7 @@ function Home() {
     <div className="content-wrapper">
       <PageHeader />
       <div className="summary-container">
+        {/* Your UI for stats */}
         <div className="summary-bar summary-line">
           <div className="summary-bar-desc">
             <div>
@@ -68,9 +75,6 @@ function Home() {
             </div>
           </div>
         </div>
-      </div>
-      <div className="active-incident-container">
-        <div className="page-sub-header">Active Incident</div>
       </div>
     </div>
   );

@@ -1,30 +1,29 @@
 const express = require("express");
 const cors = require("cors");
 const session = require("express-session");
-// Fix here: import default export for connect-mongo
-const MongoStore = require("connect-mongo").default || require("connect-mongo");
+const MongoStore = require("connect-mongo").default;
 require("dotenv").config({ path: "./config.env" });
-
 const { connectDB } = require("./db/mongo");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-/* =======================
-   CORS (REQUIRED FOR SESSIONS)
-======================= */
+/* ========== CORS ========== */
+
+// IMPORTANT: Make sure this matches exactly the frontend origin you use
+const FRONTEND_ORIGIN = "http://localhost:5173";  // <-- use localhost if your frontend is at localhost:5173
+
 app.use(cors({
-  origin: "http://localhost:5173", // React frontend
-  credentials: true
+  origin: FRONTEND_ORIGIN,
+  credentials: true,
 }));
 
 app.use(express.json());
 
-/* =======================
-   SESSION CONFIG
-======================= */
+/* ========== SESSION SETUP ========== */
+
 app.use(session({
-  name: "resitrack.sid", // cookie name
+  name: "resitrack.sid",
   secret: process.env.SESSION_SECRET || "resitrack_super_secret",
   resave: false,
   saveUninitialized: false,
@@ -34,26 +33,22 @@ app.use(session({
   }),
   cookie: {
     httpOnly: true,
-    secure: false,        // MUST be false on localhost
-    sameSite: "lax",
+    secure: false,  // false for localhost http (true if using https in production)
+    sameSite: "lax", // 'lax' is usually good for session cookies and frontend-backend on different ports
     maxAge: 1000 * 60 * 60 * 24 // 1 day
   }
 }));
 
-/* =======================
-   ROUTES
-======================= */
+/* ========== ROUTES ========== */
 app.use("/api/households", require("./routes/households"));
 app.use("/api/incidents", require("./routes/incidents"));
-app.use("/api/users", require("./routes/users")); // login/logout/me goes here
+app.use("/api/users", require("./routes/users"));
 
 app.get("/", (req, res) => {
   res.send("Welcome to the ResiTrack API backend!");
 });
 
-/* =======================
-   START SERVER AFTER DB
-======================= */
+/* ========== START SERVER ========== */
 connectDB(process.env.ATLAS_URI)
   .then(() => {
     app.listen(PORT, () => {

@@ -137,11 +137,13 @@ export default function AddHouseHold() {
         return;
       }
 
-      const response = await fetch("http://192.168.100.55:5000/api/households", {
+      const response = await fetch("http://localhost:5000/api/households", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",  // <-- ADD THIS LINE
         body: JSON.stringify(formData),
       });
+
 
       if (!response.ok) throw new Error("Failed to submit form");
 
