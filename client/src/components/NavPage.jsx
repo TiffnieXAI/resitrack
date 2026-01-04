@@ -1,8 +1,18 @@
 import { Link, useLocation } from "react-router-dom"
 import Icon from '../assets/darkIcon01t.png'
 import Logout from "./Logout";
+import { useState, useEffect } from "react";
+
 function NavPage(){
     const location = useLocation();
+    const [username, setUsername] = useState("User");
+
+    useEffect(() => {
+        const user = JSON.parse(localStorage.getItem("user")) || {};
+        if (user.username) {
+            setUsername(user.username);
+        }
+    }, []);
 
     if (location.pathname === "/login") {
     return null;
@@ -22,7 +32,7 @@ function NavPage(){
                 <div className="navProfileWrapper">
                     <div className="navProfile">
                         <div className="profileImage"></div>
-                        <div className="profileName">Stan Magallon</div>
+                        <div className="profileName">{username}</div>
                     </div>
                 </div>
                 <div className="navDivider"></div>

@@ -16,7 +16,7 @@ function LoginBar() {
       const res = await fetch(`${API_BASE}/api/users/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        credentials: "include", // MUST have this for sessions
+        credentials: "include",
         body: JSON.stringify({ username, password }),
       });
 
@@ -27,13 +27,22 @@ function LoginBar() {
         return;
       }
 
-      // Save user info to localStorage for permission checking
-      // Adjust these fields according to what your backend sends back!
+      console.log("Login response:", data);
+
+      // Save user info to localStorage
+      // Handle both _id (MongoDB) and id formats
+      const userId = data.user._id || data.user.id;
+      const userRole = data.user.role || "ROLE_USER";
+      const userName = data.user.username;
+
+      console.log("Saving to localStorage:", { id: userId, role: userRole, username: userName });
+
       localStorage.setItem(
         "user",
         JSON.stringify({
-          id: data.user._id || data.user.id, // or however your backend sends the user ID
-          role: data.user.role,               // role string e.g. "ROLE_ADMIN"
+          id: userId,
+          role: userRole,
+          username: userName,
         })
       );
 
@@ -43,7 +52,6 @@ function LoginBar() {
       setError("Server error");
     }
   };
-
 
   return (
     <div className="login-wrapper">

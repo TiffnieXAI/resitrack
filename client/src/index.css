@@ -826,3 +826,145 @@ body {
 .leaflet-tooltip.my-custom-tooltip * {
   color: black !important;
 }
+
+/*Toolbar list*/
+
+/* Incidents List Container */
+.incidents-list-wrapper {
+  margin-top: 24px;
+  padding: 20px;
+  border-radius: 12px;
+  color: white;
+}
+
+/* Title */
+.incidents-list-title {
+  margin-top: 0;
+  margin-bottom: 16px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+/* Empty State */
+.incidents-list-empty {
+  color: #9ca3af;
+  margin: 0;
+}
+
+/* Incidents Grid/List */
+.incidents-list-items {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Individual Incident Card */
+.incident-card {
+  padding: 12px;
+  background-color: #373B3B;;
+  border-radius: 8px;
+  border-left: 4px solid #10b981;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* Border colors by severity */
+.incident-card.critical {
+  border-left-color: #dc2626;
+}
+
+.incident-card.high {
+  border-left-color: #ea580c;
+}
+
+.incident-card.medium {
+  border-left-color: #eab308;
+}
+
+.incident-card.low {
+  border-left-color: #10b981;
+}
+
+/* Card hover state */
+.incident-card:hover {
+  background-color: #4b5563;
+}
+
+/* Card with no location (disabled) */
+.incident-card.no-location {
+  opacity: 0.7;
+  cursor: default;
+}
+
+.incident-card.no-location:hover {
+  background-color: #374151;
+}
+
+/* Incident Header (Type + Severity Badge) */
+.incident-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.incident-card-type {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+/* Severity Badge */
+.incident-severity-badge {
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: bold;
+  color: white;
+}
+
+.incident-severity-badge.critical {
+  background-color: #dc2626;
+}
+
+.incident-severity-badge.high {
+  background-color: #ea580c;
+}
+
+.incident-severity-badge.medium {
+  background-color: #eab308;
+}
+
+.incident-severity-badge.low {
+  background-color: #10b981;
+}
+
+/* Incident Details */
+.incident-detail {
+  margin: 4px 0;
+  font-size: 14px;
+  color: #d1d5db;
+}
+
+.incident-detail strong {
+  font-weight: bold;
+}
+
+/* No Location Warning */
+.incident-no-location-warning {
+  color: #f87171;
+  margin-left: 12px;
+}
+
+/* Time/Timestamp */
+.incident-time {
+  margin: 4px 0;
+  font-size: 14px;
+  color: #9ca3af;
+}
+
+/* Description */
+.incident-description {
+  margin: 8px 0 0 0;
+  font-size: 13px;
+  color: #d1d5db;
+}
