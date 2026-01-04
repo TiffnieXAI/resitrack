@@ -102,16 +102,26 @@ export default function CurrentLocationMap({
   const role = user?.role;
   const userId = user?.id;
 
-  console.log("=== USER INFO ===");
-  console.log("User role:", role);
-  console.log("User ID:", userId);
-  console.log("Is Admin:", role === "ROLE_ADMIN");
-
+  // Get current location
   useEffect(() => {
     navigator.geolocation.getCurrentPosition((p) => {
       setPos([p.coords.latitude, p.coords.longitude]);
       setAccuracy(p.coords.accuracy);
     });
+
+    // Check if there's a focused incident from home page
+    const focusIncident = sessionStorage.getItem("focusIncident");
+    if (focusIncident) {
+      const incident = JSON.parse(focusIncident);
+      const timer = setTimeout(() => {
+        if (mapRef.current) {
+          console.log("Focusing incident at:", incident.latitude, incident.longitude);
+          mapRef.current.setView([incident.latitude, incident.longitude], 16);
+          sessionStorage.removeItem("focusIncident");
+        }
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
   }, []);
 
   useEffect(() => {
@@ -159,7 +169,6 @@ export default function CurrentLocationMap({
     const RADIUS = 5000;
     let highestAlert = null;
 
-    // Only check alerts for regular users, not admins
     if (role === "ROLE_USER") {
       if (pos && pos[0] !== undefined && pos[1] !== undefined) {
         for (const inc of incidents) {
@@ -256,24 +265,15 @@ export default function CurrentLocationMap({
 
   const nearbyIncidents = getIncidentsInRadius();
 
-  // Get list to display based on user role
   const getIncidentsToDisplay = () => {
-    console.log("=== INCIDENTS DISPLAY ===");
-    console.log("Role:", role);
-    console.log("All incidents count:", incidents.length);
-    
     if (role === "ROLE_ADMIN") {
-      // Show ALL incidents for admin, sorted by latest first
       const sorted = [...incidents].sort((a, b) => {
         const dateA = new Date(a.timestamp || 0).getTime();
         const dateB = new Date(b.timestamp || 0).getTime();
         return dateB - dateA;
       });
-      console.log("Admin mode - showing all:", sorted.length);
       return sorted;
     } else {
-      // Show only nearby incidents for regular users
-      console.log("User mode - showing nearby:", nearbyIncidents.length);
       return nearbyIncidents;
     }
   };
