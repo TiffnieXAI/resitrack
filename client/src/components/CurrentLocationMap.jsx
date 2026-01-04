@@ -127,6 +127,18 @@ export default function CurrentLocationMap({
   // Dark mode toggle
   const [darkMode, setDarkMode] = useState(true);
 
+  // Incident detection placeholder (update this logic as needed)
+  const incidentInRadius = false; // change to true if incident detected inside radius
+
+  // Determine circle color based on incident presence
+  const circleColor = incidentInRadius
+    ? darkMode
+      ? "#ff4d4d"
+      : "#ff0000"
+    : darkMode
+    ? "#00eaff"
+    : "#1363df";
+
   // Get user location
   useEffect(() => {
     if (!("geolocation" in navigator)) {
@@ -247,13 +259,13 @@ export default function CurrentLocationMap({
             <>
               <Marker position={pos} icon={personIcon} />
 
-              {accuracy && (
+              {userRole === "ROLE_USER" && accuracy && (
                 <Circle
                   center={pos}
                   radius={accuracy * 0.1}
                   pathOptions={{
-                    color: darkMode ? "#00eaff" : "#1363df",
-                    fillColor: darkMode ? "#00eaff" : "#1363df",
+                    color: circleColor,
+                    fillColor: circleColor,
                     fillOpacity: 0.15,
                     weight: 1,
                   }}
