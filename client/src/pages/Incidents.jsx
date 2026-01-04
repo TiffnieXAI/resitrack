@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import PageHeader from "../components/PageHeader";
 import AddIncidents from "../components/AddIncidents";
+import IncidentList from "../components/IncidentList";
 import "../index.css";
 
 function Incidents() {
@@ -11,7 +12,7 @@ function Incidents() {
     <div className="content-wrapper">
       <PageHeader />
       <AddIncidents />
-      
+      <IncidentList></IncidentList>
     </div>
   );
 }

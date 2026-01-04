@@ -43,6 +43,8 @@ app.use(session({
 app.use("/api/households", require("./routes/households"));
 app.use("/api/incidents", require("./routes/incidents"));
 app.use("/api/users", require("./routes/users"));
+app.use("/api/incidents", require("./routes/incidents"));
+
 
 app.get("/", (req, res) => {
   res.send("Welcome to the ResiTrack API backend!");
