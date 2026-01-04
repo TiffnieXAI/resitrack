@@ -44,6 +44,7 @@ app.use(session({
    ROUTES
 ======================= */
 app.use("/api/households", require("./routes/households"));
+app.use("/api/incidents", require("./routes/incidents"));
 app.use("/api/users", require("./routes/users")); // login/logout/me goes here
 
 app.get("/", (req, res) => {
