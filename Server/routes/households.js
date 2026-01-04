@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const { getDB } = require("../db/mongo");
-const { ObjectId } = require("mongodb");
 
 // GET /api/households - get all households
 router.get("/", async (req, res) => {
@@ -15,17 +14,29 @@ router.get("/", async (req, res) => {
   }
 });
 
-// POST /api/households - create a new household
+// POST /api/households - create a new household with numeric _id
 router.post("/", async (req, res) => {
   try {
     const db = getDB();
 
+    // Find current max numeric _id in the collection
+    const lastHousehold = await db.collection("households")
+      .find({ _id: { $type: "number" } }) // ensure we only compare numeric _id
+      .sort({ _id: -1 })
+      .limit(1)
+      .toArray();
+
+    const newId = lastHousehold.length > 0 ? lastHousehold[0]._id + 1 : 1;
+
     const householdData = {
+      _id: newId,
       ...req.body,
       status: "unverified",
       createdBy: "",
       _class: "com.thecroods.resitrack.models.Household",
     };
+
+    console.log("Inserting household with _id:", newId);
 
     const result = await db.collection("households").insertOne(householdData);
 
@@ -36,20 +47,21 @@ router.post("/", async (req, res) => {
   }
 });
 
-// PATCH /api/households/:id - partial update (e.g., update status)
+
+// PATCH /api/households/:id - partial update (now with numeric _id)
 router.patch("/:id", async (req, res) => {
   try {
     const db = getDB();
-    const householdId = req.params.id;
+    const householdId = Number(req.params.id);
 
-    if (!ObjectId.isValid(householdId)) {
+    if (isNaN(householdId)) {
       return res.status(400).json({ message: "Invalid household ID" });
     }
 
     const updateFields = req.body;
 
     const result = await db.collection("households").updateOne(
-      { _id: new ObjectId(householdId) },
+      { _id: householdId },
       { $set: updateFields }
     );
 
@@ -64,17 +76,17 @@ router.patch("/:id", async (req, res) => {
   }
 });
 
-// PUT /api/households/:id - full replace update with validation
+// PUT /api/households/:id - full replace update with numeric _id
 router.put("/:id", async (req, res) => {
   try {
     const db = getDB();
-    const householdId = req.params.id;
+    const householdId = Number(req.params.id);
 
-    if (!ObjectId.isValid(householdId)) {
+    if (isNaN(householdId)) {
       return res.status(400).json({ message: "Invalid household ID" });
     }
 
-    const { _id, name, address, contact, status, specialNeeds } = req.body;
+    const { name, address, contact, status, specialNeeds } = req.body;
 
     // Validation: required fields and types
     if (
@@ -87,6 +99,7 @@ router.put("/:id", async (req, res) => {
     }
 
     const newHousehold = {
+      _id: householdId,
       name,
       address,
       contact,
@@ -98,7 +111,7 @@ router.put("/:id", async (req, res) => {
     console.log("Replacing household with data:", newHousehold);
 
     const result = await db.collection("households").replaceOne(
-      { _id: new ObjectId(householdId) },
+      { _id: householdId },
       newHousehold
     );
 
@@ -113,17 +126,17 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-// DELETE /api/households/:id - delete household
+// DELETE /api/households/:id - delete household with numeric _id
 router.delete("/:id", async (req, res) => {
   try {
     const db = getDB();
-    const householdId = req.params.id;
+    const householdId = Number(req.params.id);
 
-    if (!ObjectId.isValid(householdId)) {
+    if (isNaN(householdId)) {
       return res.status(400).json({ message: "Invalid household ID" });
     }
 
-    const result = await db.collection("households").deleteOne({ _id: new ObjectId(householdId) });
+    const result = await db.collection("households").deleteOne({ _id: householdId });
 
     if (result.deletedCount === 0) {
       return res.status(404).json({ message: "Household not found" });
