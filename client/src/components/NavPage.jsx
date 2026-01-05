@@ -1,5 +1,14 @@
 import { Link, useLocation } from "react-router-dom";
 import Icon from "../assets/darkIcon01t.png";
+import HomeImage from "../assets/Home.png";
+import HomeSelectedImage from "../assets/HomeS.png";
+import MapImage from "../assets/Map.png";
+import MapSelectedImage from "../assets/MapS.png";
+import HouseholdImage from "../assets/Household.png";
+import HouseholdSelectedImage from "../assets/HouseholdS.png";
+import IncidentImage from "../assets/Incident.png";
+import IncidentSelectedImage from "../assets/IncidentS.png";
+import ProfileImage from "../assets/Profile.png";
 import Logout from "./Logout";
 import { useState, useEffect } from "react";
 
@@ -34,7 +43,15 @@ function NavPage() {
           <div className="navDivider"></div>
           <div className="navProfileWrapper">
             <div className="navProfile">
-              <div className="profileImage"></div>
+              <div className="ProfileImage">
+                <div>
+                  <img
+                    src={ProfileImage}
+                    alt="Profile Image"
+                    style={{ width: "50px", height: "50px" }}
+                  ></img>
+                </div>
+              </div>
               <div className="profileName">{username}</div>
             </div>
           </div>
@@ -46,7 +63,17 @@ function NavPage() {
                   className="navButton"
                   id={location.pathname === "/home" ? "navActive" : ""}
                 >
-                  <div className="navImage"></div>
+                  <div>
+                    <img
+                      src={
+                        location.pathname === "/home"
+                          ? HomeSelectedImage
+                          : HomeImage
+                      }
+                      alt="Home"
+                      style={{ width: "50px", height: "50px" }}
+                    ></img>
+                  </div>
                   <p>Dashboard</p>
                 </div>
               </Link>
@@ -55,7 +82,17 @@ function NavPage() {
                   className="navButton"
                   id={location.pathname === "/map" ? "navActive" : ""}
                 >
-                  <div className="navImage"></div>
+                  <div>
+                    <img
+                      src={
+                        location.pathname === "/map"
+                          ? MapSelectedImage
+                          : MapImage
+                      }
+                      alt="Map"
+                      style={{ width: "50px", height: "50px" }}
+                    ></img>
+                  </div>
                   <p>Safety Map</p>
                 </div>
               </Link>
@@ -64,7 +101,17 @@ function NavPage() {
                   className="navButton"
                   id={location.pathname === "/households" ? "navActive" : ""}
                 >
-                  <div className="navImage"></div>
+                  <div>
+                    <img
+                      src={
+                        location.pathname === "/households"
+                          ? HouseholdSelectedImage
+                          : HouseholdImage
+                      }
+                      alt="Home"
+                      style={{ width: "50px", height: "50px" }}
+                    ></img>
+                  </div>
                   <p>Households</p>
                 </div>
               </Link>
@@ -73,7 +120,17 @@ function NavPage() {
                   className="navButton"
                   id={location.pathname === "/incidents" ? "navActive" : ""}
                 >
-                  <div className="navImage"></div>
+                  <div>
+                    <img
+                      src={
+                        location.pathname === "/incidents"
+                          ? IncidentSelectedImage
+                          : IncidentImage
+                      }
+                      alt="Home"
+                      style={{ width: "50px", height: "50px" }}
+                    ></img>
+                  </div>
                   <p>Incidents</p>
                 </div>
               </Link>

@@ -7,6 +7,8 @@ import HouseholdImage from "../assets/Household.png";
 import HouseholdSelectedImage from "../assets/HouseholdS.png";
 import IncidentImage from "../assets/Incident.png";
 import IncidentSelectedImage from "../assets/IncidentS.png";
+import PhoneImage from "../assets/Phone.png";
+import PhoneSelectedImage from "../assets/PhoneS.png";
 
 function NavMobile() {
   const location = useLocation();
@@ -27,7 +29,18 @@ function NavMobile() {
           <img
             src={location.pathname === "/map" ? MapSelectedImage : MapImage}
             alt="Map"
-            style={{ width: "30px", height: "30px" }}
+            style={{ width: "50px", height: "50px" }}
+          />
+        </div>
+      </Link>
+      <Link to="/home">
+        <div className="navButtMobile">
+          <img
+            src={
+              location.pathname === "/call" ? PhoneSelectedImage : PhoneImage
+            }
+            alt="Phone"
+            style={{ width: "50px", height: "50px" }}
           />
         </div>
       </Link>
