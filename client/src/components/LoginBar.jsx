@@ -35,7 +35,11 @@ function LoginBar() {
       const userRole = data.user.role || "ROLE_USER";
       const userName = data.user.username;
 
-      console.log("Saving to localStorage:", { id: userId, role: userRole, username: userName });
+      console.log("Saving to localStorage:", {
+        id: userId,
+        role: userRole,
+        username: userName,
+      });
 
       localStorage.setItem(
         "user",
@@ -46,7 +50,7 @@ function LoginBar() {
         })
       );
 
-      navigate("/");
+      navigate("/home");
     } catch (err) {
       console.error(err);
       setError("Server error");
@@ -57,7 +61,7 @@ function LoginBar() {
     <div className="login-wrapper">
       <div className="login-box">
         <div className="login-box-wrapper">
-          <p className="login-header">Welcome Back!</p>
+          <p className="login-header">Welcome!</p>
 
           <div className="login-bar-wrapper">
             <input
