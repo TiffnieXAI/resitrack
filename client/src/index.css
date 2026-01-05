@@ -1095,6 +1095,23 @@ body {
   text-transform: uppercase;
 }
 
+.listButton {
+  color: white;
+  background-color: #0E0F10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 20px;
+  border-radius: 1vh;
+  cursor: pointer;
+}
+
+.listButton:disabled {
+  opacity: 0.5; /* Optional: visually indicate the button is disabled */
+  cursor: not-allowed; /* Change cursor to indicate disabled state */
+}
+
+
 @media (max-width: 768px) {
   .navbar {
     padding: 20px;

@@ -165,7 +165,7 @@ function HouseHoldList() {
 
     try {
       const res = await fetch(`http://localhost:5000/api/households/${id}`, {
-        method: "PATCH",  // <--- FIXED HERE
+        method: "PATCH", // <--- FIXED HERE
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(editFormData),
         credentials: "include",
@@ -197,9 +197,9 @@ function HouseHoldList() {
     <div className="household-list-wrapper">
       {paginatedHouseholds.map((household) => {
         console.log(
-          `Household ${household._id} createdBy=${household.createdBy}, canEdit=${canEdit(
-            household
-          )}`
+          `Household ${household._id} createdBy=${
+            household.createdBy
+          }, canEdit=${canEdit(household)}`
         );
 
         return (
@@ -355,6 +355,7 @@ function HouseHoldList() {
         <button
           onClick={() => setPage((p) => Math.max(p - 1, 0))}
           disabled={page === 0}
+          className="listButton"
         >
           Prev
         </button>
@@ -366,6 +367,7 @@ function HouseHoldList() {
             )
           }
           disabled={(page + 1) * ITEMS_PER_PAGE >= households.length}
+          className="listButton"
         >
           Next
         </button>

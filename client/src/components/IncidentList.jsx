@@ -10,8 +10,7 @@ function IncidentList() {
 
   const ITEMS_PER_PAGE = 5;
 
-  const API_BASE_URL =
-    import.meta.env.VITE_API_URL || "http://localhost:5000";
+  const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
   // Get logged-in user & role
   const storedUser = JSON.parse(localStorage.getItem("user"));
@@ -68,15 +67,12 @@ function IncidentList() {
   // SAVE EDIT
   const handleSave = async () => {
     try {
-      const res = await fetch(
-        `${API_BASE_URL}/api/incidents/${editingId}`,
-        {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          credentials: "include",
-          body: JSON.stringify(editForm),
-        }
-      );
+      const res = await fetch(`${API_BASE_URL}/api/incidents/${editingId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify(editForm),
+      });
 
       if (!res.ok) throw new Error("Update failed");
 
@@ -277,6 +273,7 @@ function IncidentList() {
         <button
           onClick={() => setPage((p) => Math.max(p - 1, 0))}
           disabled={page === 0}
+          className="listButton"
         >
           Prev
         </button>
@@ -288,6 +285,7 @@ function IncidentList() {
             )
           }
           disabled={(page + 1) * ITEMS_PER_PAGE >= incidents.length}
+          className="listButton"
         >
           Next
         </button>
