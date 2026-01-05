@@ -19,19 +19,19 @@ const personIcon = new L.Icon({
 });
 
 const houseIconSafe = new L.Icon({
-  iconUrl: "https://cdn-icons-png.flaticon.com/512/1524/1524815.png",
+  iconUrl: "../src/assets/HouseSafe.png",
   iconSize: [40, 40],
   iconAnchor: [20, 40],
 });
 
 const houseIconNotSafe = new L.Icon({
-  iconUrl: "https://cdn-icons-png.flaticon.com/512/1534/1534049.png",
+  iconUrl: "../src/assets/HouseUnsafe.png",
   iconSize: [40, 40],
   iconAnchor: [20, 40],
 });
 
 const houseIconUnverified = new L.Icon({
-  iconUrl: "https://cdn-icons-png.flaticon.com/512/679/679922.png",
+  iconUrl: "../src/assets/HouseUnverified.png",
   iconSize: [40, 40],
   iconAnchor: [20, 40],
 });
@@ -48,8 +48,7 @@ L.Icon.Default.mergeOptions({
   iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
   iconRetinaUrl:
     "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
-  shadowUrl:
-    "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
+  shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
 });
 
 // Helpers
@@ -76,8 +75,7 @@ const distanceMeters = (a, b) => {
   const Δλ = ((b[1] - a[1]) * Math.PI) / 180;
 
   const x =
-    Math.sin(Δφ / 2) ** 2 +
-    Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) ** 2;
+    Math.sin(Δφ / 2) ** 2 + Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) ** 2;
 
   return R * 2 * Math.atan2(Math.sqrt(x), Math.sqrt(1 - x));
 };
@@ -115,7 +113,11 @@ export default function CurrentLocationMap({
       const incident = JSON.parse(focusIncident);
       const timer = setTimeout(() => {
         if (mapRef.current) {
-          console.log("Focusing incident at:", incident.latitude, incident.longitude);
+          console.log(
+            "Focusing incident at:",
+            incident.latitude,
+            incident.longitude
+          );
           mapRef.current.setView([incident.latitude, incident.longitude], 16);
           sessionStorage.removeItem("focusIncident");
         }
@@ -174,12 +176,12 @@ export default function CurrentLocationMap({
         for (const inc of incidents) {
           const lat = Number(inc.latitude);
           const lng = Number(inc.longitude);
-          
+
           if (isNaN(lat) || isNaN(lng)) continue;
-          
+
           const incPos = [lat, lng];
           const distance = distanceMeters(pos, incPos);
-          
+
           if (distance < RADIUS) {
             const severity = inc.severity?.toLowerCase();
             if (severity === "critical" || severity === "high") {
@@ -196,13 +198,13 @@ export default function CurrentLocationMap({
         for (const h of households) {
           const hLat = Number(h.latitude);
           const hLng = Number(h.longitude);
-          
+
           if (isNaN(hLat) || isNaN(hLng)) continue;
 
           for (const inc of incidents) {
             const incLat = Number(inc.latitude);
             const incLng = Number(inc.longitude);
-            
+
             if (isNaN(incLat) || isNaN(incLng)) continue;
 
             const hPos = [hLat, hLng];
@@ -219,7 +221,7 @@ export default function CurrentLocationMap({
               }
             }
           }
-          
+
           if (highestAlert) break;
         }
       }
@@ -236,13 +238,13 @@ export default function CurrentLocationMap({
     for (const h of households) {
       const hLat = Number(h.latitude);
       const hLng = Number(h.longitude);
-      
+
       if (isNaN(hLat) || isNaN(hLng)) continue;
 
       for (const inc of incidents) {
         const incLat = Number(inc.latitude);
         const incLng = Number(inc.longitude);
-        
+
         if (isNaN(incLat) || isNaN(incLng)) continue;
 
         const hPos = [hLat, hLng];
@@ -288,7 +290,11 @@ export default function CurrentLocationMap({
   };
 
   const handleIncidentClick = (incident) => {
-    if (mapRef.current && incident.latitude !== undefined && incident.longitude !== undefined) {
+    if (
+      mapRef.current &&
+      incident.latitude !== undefined &&
+      incident.longitude !== undefined
+    ) {
       mapRef.current.setView([incident.latitude, incident.longitude], 16);
     }
   };
@@ -342,8 +348,18 @@ export default function CurrentLocationMap({
                 center={pos}
                 radius={accuracy * 0.1}
                 pathOptions={{
-                  color: alertLevel === "DANGER" ? "#dc2626" : alertLevel === "WARNING" ? "#eab308" : "#00eaff",
-                  fillColor: alertLevel === "DANGER" ? "#dc2626" : alertLevel === "WARNING" ? "#eab308" : "#00eaff",
+                  color:
+                    alertLevel === "DANGER"
+                      ? "#dc2626"
+                      : alertLevel === "WARNING"
+                      ? "#eab308"
+                      : "#00eaff",
+                  fillColor:
+                    alertLevel === "DANGER"
+                      ? "#dc2626"
+                      : alertLevel === "WARNING"
+                      ? "#eab308"
+                      : "#00eaff",
                   fillOpacity: 0.2,
                 }}
               />
@@ -352,7 +368,9 @@ export default function CurrentLocationMap({
           )}
 
           {households
-            .filter((h) => h.latitude !== undefined && h.longitude !== undefined)
+            .filter(
+              (h) => h.latitude !== undefined && h.longitude !== undefined
+            )
             .map((h) => (
               <Marker
                 key={h._id}
@@ -368,7 +386,9 @@ export default function CurrentLocationMap({
             ))}
 
           {incidents
-            .filter((i) => i.latitude !== undefined && i.longitude !== undefined)
+            .filter(
+              (i) => i.latitude !== undefined && i.longitude !== undefined
+            )
             .map((i) => (
               <Marker
                 key={i._id}
@@ -388,14 +408,21 @@ export default function CurrentLocationMap({
       </div>
 
       {/* Incidents list */}
-      <div className="incidents-list-wrapper" style={{ maxHeight: "400px", overflowY: "auto" }}>
+      <div
+        className="incidents-list-wrapper"
+        style={{ maxHeight: "400px", overflowY: "auto" }}
+      >
         <h3 className="incidents-list-title">
-          {role === "ROLE_ADMIN" ? "All Incidents" : "Incidents Near Your Households"}
+          {role === "ROLE_ADMIN"
+            ? "All Incidents"
+            : "Incidents Near Your Households"}
         </h3>
-        
+
         {incidentsToDisplay.length === 0 ? (
           <p className="incidents-list-empty">
-            {role === "ROLE_ADMIN" ? "No incidents found" : "No incidents within 5km of your households"}
+            {role === "ROLE_ADMIN"
+              ? "No incidents found"
+              : "No incidents within 5km of your households"}
           </p>
         ) : (
           <div className="incidents-list-items">
@@ -404,18 +431,27 @@ export default function CurrentLocationMap({
                 key={`incident-${inc._id}-${idx}`}
                 onClick={() => handleIncidentClick(inc)}
                 className={`incident-card ${inc.severity?.toLowerCase()} ${
-                  inc.latitude === undefined || inc.longitude === undefined ? "no-location" : ""
+                  inc.latitude === undefined || inc.longitude === undefined
+                    ? "no-location"
+                    : ""
                 }`}
                 onMouseEnter={(e) => {
-                  if (inc.latitude !== undefined && inc.longitude !== undefined) {
+                  if (
+                    inc.latitude !== undefined &&
+                    inc.longitude !== undefined
+                  ) {
                     e.currentTarget.style.backgroundColor = "#4b5563";
                   }
                 }}
-                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = "#374151"}
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.backgroundColor = "#374151")
+                }
               >
                 <div className="incident-card-header">
                   <div className="incident-card-type">{inc.type}</div>
-                  <span className={`incident-severity-badge ${inc.severity?.toLowerCase()}`}>
+                  <span
+                    className={`incident-severity-badge ${inc.severity?.toLowerCase()}`}
+                  >
                     {inc.severity?.toUpperCase()}
                   </span>
                 </div>
@@ -424,15 +460,25 @@ export default function CurrentLocationMap({
                 </p>
                 <p className="incident-detail">
                   <strong>Phase:</strong> {inc.phase}
-                  {inc.latitude !== undefined && inc.longitude !== undefined && role !== "ROLE_ADMIN" && (
-                    <> | <strong>Distance:</strong> {inc.distance}m from {inc.nearestHousehold}</>
-                  )}
+                  {inc.latitude !== undefined &&
+                    inc.longitude !== undefined &&
+                    role !== "ROLE_ADMIN" && (
+                      <>
+                        {" "}
+                        | <strong>Distance:</strong> {inc.distance}m from{" "}
+                        {inc.nearestHousehold}
+                      </>
+                    )}
                   {inc.latitude === undefined || inc.longitude === undefined ? (
-                    <span className="incident-no-location-warning"> ⚠️ No location</span>
+                    <span className="incident-no-location-warning">
+                      {" "}
+                      ⚠️ No location
+                    </span>
                   ) : null}
                 </p>
                 <p className="incident-time">
-                  <strong>Time:</strong> {new Date(inc.timestamp).toLocaleString()}
+                  <strong>Time:</strong>{" "}
+                  {new Date(inc.timestamp).toLocaleString()}
                 </p>
                 <p className="incident-description">
                   <strong>Description:</strong> {inc.description}

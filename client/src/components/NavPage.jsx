@@ -32,7 +32,11 @@ function NavPage() {
     <div className="navContainer" id="NavContent">
       <div className="navTitle">
         <div>
-          <img src={Icon} className="navIcon"></img>
+          <img
+            src={Icon}
+            style={{ width: "50px", height: "50px" }}
+            className="navIcon"
+          ></img>
           <p>ResiTrack</p>
           <div className="mobileProfileImage"></div>
         </div>
@@ -71,7 +75,7 @@ function NavPage() {
                           : HomeImage
                       }
                       alt="Home"
-                      style={{ width: "50px", height: "50px" }}
+                      style={{ width: "45px", height: "45px" }}
                     ></img>
                   </div>
                   <p>Dashboard</p>
@@ -90,7 +94,7 @@ function NavPage() {
                           : MapImage
                       }
                       alt="Map"
-                      style={{ width: "50px", height: "50px" }}
+                      style={{ width: "45px", height: "45px" }}
                     ></img>
                   </div>
                   <p>Safety Map</p>
@@ -109,7 +113,7 @@ function NavPage() {
                           : HouseholdImage
                       }
                       alt="Home"
-                      style={{ width: "50px", height: "50px" }}
+                      style={{ width: "45px", height: "45px" }}
                     ></img>
                   </div>
                   <p>Households</p>
@@ -128,7 +132,7 @@ function NavPage() {
                           : IncidentImage
                       }
                       alt="Home"
-                      style={{ width: "50px", height: "50px" }}
+                      style={{ width: "45px", height: "45px" }}
                     ></img>
                   </div>
                   <p>Incidents</p>
