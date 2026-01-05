@@ -809,6 +809,10 @@ body {
   align-items: center;
 }
 
+.incident-actions button {
+  
+}
+
 .incident-head-title {
   font-weight: bold;
   font-size: 3vh;
@@ -864,7 +868,7 @@ body {
 /* Individual Incident Card */
 .incident-card {
   padding: 12px;
-  background-color: #373B3B;;
+  background-color: #385775;;
   border-radius: 8px;
   border-left: 4px solid #10b981;
   cursor: pointer;
