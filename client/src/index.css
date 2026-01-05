@@ -345,9 +345,6 @@ body {
   @media (max-width:720px) {
     height: 8vh;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 20px;
     width: 100%;
     position: fixed;
     bottom: 0;
@@ -810,7 +807,7 @@ body {
 }
 
 .incident-actions button {
-  
+  background-color: #0e0f10;
 }
 
 .incident-head-title {
@@ -974,121 +971,4 @@ body {
   margin: 8px 0 0 0;
   font-size: 13px;
   color: #d1d5db;
-}
-
-.lp-container {
-  position: relative;
-  width: 100%;
-  height: 100vh;
-  min-height: 600px;
-  display: flex;
-  flex-direction: column;
-  font-family: sans-serif; /* Default font family */
-  color: #ffffff;
-  overflow: hidden;
-}
-
-.lp-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.45);
-  z-index: 1;
-}
-
-.navbar {
-  position: relative;
-  z-index: 10;
-  padding: 30px 50px;
-}
-
-.logo-container {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.logo-icon {
-  stroke-width: 2.5px;
-  width: 40px; /* Moved from inline style */
-  height: 40px; /* Moved from inline style */
-}
-
-.logo-text {
-  font-size: 22px;
-  font-weight: 700;
-  letter-spacing: -0.5px;
-}
-
-.lp-content {
-  position: relative;
-  z-index: 10;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  padding: 0 20px;
-  margin-top: -50px;
-}
-
-.lp-title {
-  display: flex;
-  flex-direction: column;
-  line-height: 1.1;
-  margin-bottom: 30px;
-}
-
-.title-accent {
-  font-size: clamp(32px, 5vw, 56px);
-  font-weight: 800;
-  color: #4a3b3b; /* Dark brownish tint from image */
-  letter-spacing: 2px;
-  text-transform: uppercase;
-}
-
-.title-main {
-  font-size: clamp(40px, 7vw, 84px);
-  font-weight: 800;
-  color: #ffffff;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  max-width: 1000px;
-}
-
-.lp-description {
-  font-size: clamp(12px, 1.5vw, 16px);
-  font-weight: 600;
-  max-width: 600px;
-  line-height: 1.6;
-  letter-spacing: 1px;
-  color: rgba(255, 255, 255, 0.9);
-  text-transform: uppercase;
-}
-
-@media (max-width: 768px) {
-  .navbar {
-    padding: 20px;
-  }
-  .lp-description {
-    max-width: 90%;
-  }
-}
-
-.logButton {
-  padding: 15px 30px; /* Increases the button's padding */
-  font-size: 18px; /* Increases the font size */
-  background-color: #0E0F10; /* Example background color */
-  color: white; /* Text color */
-  border: none; /* Removes border */
-  border-radius: 5px; /* Rounds the corners */
-  cursor: pointer; /* Changes cursor to pointer on hover */
-  transition: background-color 0.3s; /* Smooth transition for hover effect */
-}
-
-.logButton:hover {
-  background-color: #030303; /* Darker shade on hover */
 }

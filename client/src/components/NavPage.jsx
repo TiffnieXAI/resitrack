@@ -14,7 +14,8 @@ function NavPage() {
     }
   }, []);
 
-  if (location.pathname === "/login" || "/") {
+  // Only hide on login page
+  if (location.pathname === "/login") {
     return null;
   }
 
