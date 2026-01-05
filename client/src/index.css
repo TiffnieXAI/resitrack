@@ -572,11 +572,17 @@ body {
   display: flex;
   justify-content: space-between;
   gap: 2vh;
-  color: white !important;;
+  color: white !important;
 }
 
+
 .edit-household {
-  color: white;
+  color: white !important;
+  background-color: #202020;
+  align-items: center;
+  justify-content: center;
+  padding: 0.6vh;
+  display: flex;
 }
 
 .household-list-content{
@@ -807,7 +813,10 @@ body {
 }
 
 .incident-actions button {
-  background-color: #0e0f10;
+  background-color: #202020;
+  border: none;
+  padding: 1vh;
+  border-radius: 0.6vh;
 }
 
 .incident-head-title {
