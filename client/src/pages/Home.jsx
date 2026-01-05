@@ -21,6 +21,8 @@ const distanceMeters = (a, b) => {
 
 function Home() {
   const navigate = useNavigate();
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState({
     total: 0,
     safe: 0,
@@ -34,12 +36,34 @@ function Home() {
   const [incidents, setIncidents] = useState([]);
   const [incidentsChartData, setIncidentsChartData] = useState([]);
 
-  const user = JSON.parse(localStorage.getItem("user")) || {};
-  const role = user?.role;
-  const userId = user?.id;
+  // Fetch user info from backend
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const res = await fetch(`${API_BASE}/api/users/session`, {
+          credentials: "include",
+        });
+        const data = await res.json();
+        if (data.loggedIn && data.user) {
+          // Convert 'id' to '_id' for consistency with household createdBy checks
+          setUser({ ...data.user, _id: data.user.id });
+        } else {
+          navigate("/login");
+        }
+      } catch (err) {
+        console.error("Failed to fetch user:", err);
+        navigate("/login");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchUser();
+  }, [navigate]);
 
   // Fetch households
   useEffect(() => {
+    if (!user) return;
+
     fetch(`${API_BASE}/api/households`, {
       credentials: "include",
     })
@@ -49,8 +73,8 @@ function Home() {
       })
       .then((data) => {
         let filteredData = data;
-        if (role === "ROLE_USER") {
-          filteredData = data.filter((h) => String(h.createdBy) === String(userId));
+        if (user.role === "ROLE_USER") {
+          filteredData = data.filter((h) => String(h.createdBy) === String(user._id || user.id));
         }
         setHouseholds(filteredData);
 
@@ -68,9 +92,9 @@ function Home() {
       .catch((err) => {
         console.error("Failed to fetch households", err);
       });
-  }, [role, userId]);
+  }, [user]);
 
-  // Fetch incidents for users (to show nearby)
+  // Fetch incidents
   useEffect(() => {
     fetch(`${API_BASE}/api/incidents`, {
       credentials: "include",
@@ -89,7 +113,7 @@ function Home() {
 
   // Get nearby incidents within 48 hours for users
   useEffect(() => {
-    if (role === "ROLE_USER" && households.length > 0 && incidents.length > 0) {
+    if (user?.role === "ROLE_USER" && households.length > 0 && incidents.length > 0) {
       const RADIUS = 5000;
       const now = new Date();
       const fortyEightHoursAgo = new Date(now.getTime() - 48 * 60 * 60 * 1000);
@@ -128,19 +152,20 @@ function Home() {
       nearby.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
       setNearbyIncidents(nearby);
     }
-  }, [role, households, incidents]);
+  }, [user, households, incidents]);
 
   // Generate chart data for last 24 hours
   useEffect(() => {
-    if (role === "ROLE_ADMIN" && incidents.length > 0) {
+    if (user?.role === "ROLE_ADMIN" && incidents.length > 0) {
       const now = new Date();
       const oneDayAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
 
-      // Create hourly buckets
+      // Create hourly buckets using hour index (0-23)
       const hourlyData = {};
       for (let i = 23; i >= 0; i--) {
         const hour = new Date(now.getTime() - i * 60 * 60 * 1000);
-        const hourKey = hour.toLocaleString("en-US", { hour: "2-digit", minute: "2-digit", hour12: false });
+        const hourIndex = hour.getHours();
+        const hourKey = String(hourIndex).padStart(2, "0") + ":00";
         hourlyData[hourKey] = 0;
       }
 
@@ -148,7 +173,8 @@ function Home() {
       incidents.forEach((inc) => {
         const incTime = new Date(inc.timestamp);
         if (incTime > oneDayAgo) {
-          const hourKey = incTime.toLocaleString("en-US", { hour: "2-digit", minute: "2-digit", hour12: false });
+          const hourIndex = incTime.getHours();
+          const hourKey = String(hourIndex).padStart(2, "0") + ":00";
           if (hourlyData.hasOwnProperty(hourKey)) {
             hourlyData[hourKey]++;
           }
@@ -163,7 +189,7 @@ function Home() {
 
       setIncidentsChartData(chartData);
     }
-  }, [role, incidents]);
+  }, [user, incidents]);
 
   const handleIncidentClick = (incident) => {
     // Store incident location in sessionStorage
@@ -185,6 +211,14 @@ function Home() {
       return acc;
     }, {}),
   };
+
+  if (loading) {
+    return <div className="content-wrapper"><p>Loading...</p></div>;
+  }
+
+  if (!user) {
+    return <div className="content-wrapper"><p>Unauthorized</p></div>;
+  }
 
   return (
     <div className="content-wrapper">
@@ -228,7 +262,7 @@ function Home() {
       </div>
 
       {/* User Section - Nearby Incidents */}
-      {role === "ROLE_USER" && (
+      {user.role === "ROLE_USER" && (
         <div style={{ marginTop: "32px" }}>
           <h3 style={{ fontSize: "20px", fontWeight: "bold", marginBottom: "16px" }}>
             Nearby Incidents (Last 48 Hours)
@@ -297,7 +331,7 @@ function Home() {
       )}
 
       {/* Admin Section - Charts and Stats */}
-      {role === "ROLE_ADMIN" && (
+      {user.role === "ROLE_ADMIN" && (
         <div style={{ marginTop: "32px" }}>
           <h3 style={{ fontSize: "20px", fontWeight: "bold", marginBottom: "16px" }}>
             Incidents Overview
