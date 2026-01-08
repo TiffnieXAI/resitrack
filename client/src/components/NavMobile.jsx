@@ -20,7 +20,7 @@ function NavMobile() {
           <img
             src={location.pathname === "/home" ? HomeSelectedImage : HomeImage}
             alt="Home"
-            style={{ width: "50px", height: "50px" }}
+            style={{ width: "6vh", height: "6vh" }}
           />
         </div>
       </Link>
@@ -29,21 +29,21 @@ function NavMobile() {
           <img
             src={location.pathname === "/map" ? MapSelectedImage : MapImage}
             alt="Map"
-            style={{ width: "50px", height: "50px" }}
+            style={{ width: "6vh", height: "6vh" }}
           />
         </div>
       </Link>
-      <Link to="/home">
+    
         <div className="navButtMobile">
           <img
             src={
               location.pathname === "/call" ? PhoneSelectedImage : PhoneImage
             }
             alt="Phone"
-            style={{ width: "50px", height: "50px" }}
+            style={{ width: "6vh", height: "6vh" }}
           />
         </div>
-      </Link>
+  
       <Link to="/households">
         <div className="navButtMobile">
           <img
@@ -53,7 +53,7 @@ function NavMobile() {
                 : HouseholdImage
             }
             alt="Household"
-            style={{ width: "40px", height: "40px" }}
+            style={{ width: "6vh", height: "6vh" }}
           />
         </div>
       </Link>
@@ -66,7 +66,7 @@ function NavMobile() {
                 : IncidentImage
             }
             alt="Incident"
-            style={{ width: "40px", height: "40px" }}
+            style={{ width: "6vh", height: "6vh" }}
           />
         </div>
       </Link>

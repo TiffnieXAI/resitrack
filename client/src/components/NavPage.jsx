@@ -75,7 +75,7 @@ function NavPage() {
                           : HomeImage
                       }
                       alt="Home"
-                      style={{ width: "45px", height: "45px" }}
+                      style={{ width: "4.5vh", height: "4.5vh" }}
                     ></img>
                   </div>
                   <p>Dashboard</p>
@@ -94,7 +94,7 @@ function NavPage() {
                           : MapImage
                       }
                       alt="Map"
-                      style={{ width: "45px", height: "45px" }}
+                      style={{ width: "4.5vh", height: "4.5vh" }}
                     ></img>
                   </div>
                   <p>Safety Map</p>
@@ -113,7 +113,7 @@ function NavPage() {
                           : HouseholdImage
                       }
                       alt="Home"
-                      style={{ width: "45px", height: "45px" }}
+                      style={{ width: "4.5vh", height: "4.5vh" }}
                     ></img>
                   </div>
                   <p>Households</p>
@@ -132,7 +132,7 @@ function NavPage() {
                           : IncidentImage
                       }
                       alt="Home"
-                      style={{ width: "45px", height: "45px" }}
+                      style={{ width: "4.5vh", height: "4.5vh" }}
                     ></img>
                   </div>
                   <p>Incidents</p>
