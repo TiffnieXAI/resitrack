@@ -13,6 +13,15 @@ import PhoneSelectedImage from "../assets/PhoneS.png";
 function NavMobile() {
   const location = useLocation();
 
+  if (location.pathname === "/login" || location.pathname === "/" || location.pathname === "/about" ) {
+    return null;
+  }
+
+  const handleEmergencyCall = () => {
+    // Call 911 (Philippines emergency number)
+    window.location.href = "tel:911";
+  };
+
   return (
     <div className="navMobile">
       <Link to="/home">
@@ -34,15 +43,13 @@ function NavMobile() {
         </div>
       </Link>
     
-        <div className="navButtMobile">
-          <img
-            src={
-              location.pathname === "/call" ? PhoneSelectedImage : PhoneImage
-            }
-            alt="Phone"
-            style={{ width: "6vh", height: "6vh" }}
-          />
-        </div>
+      <div className="navButtMobile" onClick={handleEmergencyCall} style={{ cursor: "pointer" }}>
+        <img
+          src={PhoneImage}
+          alt="Phone"
+          style={{ width: "6vh", height: "6vh" }}
+        />
+      </div>
   
       <Link to="/households">
         <div className="navButtMobile">

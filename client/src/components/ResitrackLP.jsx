@@ -37,6 +37,9 @@ const ResiTrackLP = (props) => {
         <Link to="/login">
           <button className="logButton">JOIN NOW</button>
         </Link>
+        <Link to="about">
+          <p className="about-butt">about</p>
+        </Link>
       </main>
     </div>
   );

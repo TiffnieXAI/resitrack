@@ -9,6 +9,10 @@ import Households from "./pages/Households.jsx";
 import Login from "./pages/Login.jsx";
 import AuthGuard from "./components/AuthGuard.jsx";
 import ResitrackLandingPage from "./pages/ResitrackLandingPage.jsx";
+import About from "./pages/About.jsx";
+import Register from "./pages/Register.jsx";
+
+
 function App() {
   return (
     <>
@@ -73,6 +77,16 @@ function App() {
             path="/"
             element={<ResitrackLandingPage></ResitrackLandingPage>}
           ></Route>
+          <Route
+            path="/about"
+            element={<About></About>}
+          ></Route>
+          <Route
+            path="/register"
+            element={<Register></Register>}
+          ></Route>
+
+
         </Routes>
 
         <NavMobile></NavMobile>
