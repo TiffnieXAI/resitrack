@@ -7,8 +7,10 @@ import "../index.css";
 
 // Fix default marker icon issues for leaflet
 const iconUrl = "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png";
-const iconRetinaUrl = "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png";
-const shadowUrl = "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png";
+const iconRetinaUrl =
+  "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png";
+const shadowUrl =
+  "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png";
 
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -87,8 +89,10 @@ export default function AddIncidents() {
         // Clamp location inside PH bounds or default to center
         if (!philippinesBounds.contains([latitude, longitude])) {
           latitude = 12.8797;
-          longitude = 121.7740;
-          alert("Current location is outside the Philippines, defaulting map center.");
+          longitude = 121.774;
+          alert(
+            "Current location is outside the Philippines, defaulting map center."
+          );
         }
 
         setPos([latitude, longitude]);
@@ -251,6 +255,7 @@ export default function AddIncidents() {
             type="text"
             name="affectedArea"
             className="form-input"
+            placeholder="Brgy. 123, San Juan City, NCR"
             value={formData.affectedArea}
             onChange={handleChange}
             required
@@ -261,6 +266,7 @@ export default function AddIncidents() {
             type="number"
             name="numberOfAffectedFamilies"
             className="form-input"
+            placeholder="Numeric input (e.g. 10)"
             value={formData.numberOfAffectedFamilies}
             onChange={handleChange}
             required
@@ -271,6 +277,7 @@ export default function AddIncidents() {
             type="text"
             name="reliefDistributed"
             className="form-input"
+            placeholder="Insert numeric input here (e.g. 10)."
             value={formData.reliefDistributed}
             onChange={handleChange}
             required
@@ -281,6 +288,7 @@ export default function AddIncidents() {
             type="text"
             name="description"
             className="form-input"
+            placeholder="Insert descriptive text of the incident here."
             value={formData.description}
             onChange={handleChange}
             required
