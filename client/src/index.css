@@ -1179,8 +1179,9 @@ body {
 .register-wrapper {
   display: flex;
   width: 100%;
-  height: 100vh;
+
   justify-content: center;
+  margin-top: 20vh;
 }
 
 .register-container {
@@ -1188,6 +1189,8 @@ body {
   display: flex;
   justify-content: center;
   background-color: #272929;
+  height: 50vh;
+  border-radius: 1vh;
 }
 
 .reg-wrapper {
@@ -1207,4 +1210,7 @@ body {
   height: 3vh;
 }
 
-.register
+.register-head {
+  font-size: 3vh;
+  font-weight: bold;
+}

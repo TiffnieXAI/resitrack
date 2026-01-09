@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const API_BASE = "http://localhost:5000";
 
@@ -86,6 +86,13 @@ function LoginBar() {
           >
             Login
           </div>
+
+          <p style={{ marginTop: "20px", textAlign: "center" }}>
+            Don't have an account yet?{" "}
+            <Link to="/register" style={{ color: "#00eaff", textDecoration: "none" }}>
+              Register here
+            </Link>
+          </p>
         </div>
       </div>
     </div>
