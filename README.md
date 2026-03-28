@@ -17,6 +17,22 @@ By utilizing color-coded mapping and live data streaming via WebSockets, Resi-Tr
 
 ---
 
+## 📸 System Preview
+
+| Dashboard View | Incident Reporting |
+|---|---|
+| <img width="512" height="254" alt="dashboard" src="https://github.com/user-attachments/assets/2cb89beb-3fcf-4c87-abb1-a21fdc331664" /> | <img width="512" height="257" alt="incidentreport" src="https://github.com/user-attachments/assets/de966a3a-5c68-4577-b12d-dca93059fa4a" />
+
+
+
+| Register Household | Incident Dashboard |
+|---|---|
+| <img width="512" height="257" alt="households" src="https://github.com/user-attachments/assets/b5694b95-d331-45b2-b11a-35fb00c806f4" /> | <img width="512" height="257" alt="incidents" src="https://github.com/user-attachments/assets/5e263c2b-bd47-4464-934b-5fdaa04aa79d" /> |
+
+
+
+---
+
 ## 🛠 Tech Stack
 
 ### Frontend
@@ -56,6 +72,7 @@ Before you begin, ensure you have the following installed:
     ```
     *The server typically starts on port 8080.*
 
+
 ### 2. Frontend Setup (React + Vite)
 1.  Navigate to the `frontend` folder.
 2.  Install the required packages:
@@ -67,3 +84,9 @@ Before you begin, ensure you have the following installed:
     npm run dev
     ```
     *Open the provided local URL (usually http://localhost:5173) in your browser.*
+
+## 👥 Contributors
+*   **Team:** Stiffany Tisoy, Ian Lee Muyo, Geneva Mae Cabutotan, John Vincent Jakosalem, Gatsby James Gatbonton, Kris Constantine Magallon, Sean Christian Mhel Tugalon.
+*   **Course:** In Partial Fulfillment of the Requirements for Object Oriented Programming.
+*   **Instructor:** Renz Angelo Cadaoas
+*   **Date:** January 10, 2026
